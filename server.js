@@ -41,9 +41,9 @@ app.use('/user', userHomeController)
 
 app.get('/', (req, res) => {
   if(req.session.user){
-    res.redirect('views/user/homepage.ejs')
+    res.redirect('views/user/homepage')
   } else {
-  res.render('index.ejs',)}
+  res.render('index',)}
 });
 
 app.use('/auth', authController);
