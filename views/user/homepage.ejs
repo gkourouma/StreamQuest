@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= user.username %>Homepage</title>
+  </head>
+  <body>
+    <h1><%= greeting %>, <%= user.username %></h1>
+
+    <h2>Movies and TV Shows</h2>
+    <ul>
+      <% if(movies.length > 0) { %> <% movies.forEach(movie => { %>
+      <li><%= movie.title %> - <%= movie.genre %></li>
+      <% }) %> <% } else { %>
+      <p>No Movies/TV Shows Available.</p>
+      <% } %>
+    </ul>
+  </body>
+</html>
