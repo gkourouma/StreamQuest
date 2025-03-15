@@ -15,8 +15,12 @@ try{
     greeting = "Good Evening";
   }
 
-  const genreFilter = req.query.genre ? { genre: req.query.genre } : {};
-  const movies = await Movie.find(genreFilter);
+  const genreFilter = req.query.genre && req.query.genre !== 'All' ? { genre: req.query.genre } : {};
+  const ratingFilter = req.query.minRating && req.query.minRating !== 'All' ? {rating: {$gte: Math.floor(parseFloat(req.query.minRating))}}: {}
+
+  const combo = {...genreFilter, ...ratingFilter}
+
+  const movies = await Movie.find(combo);
 
   res.render("user/homepage", {movies, greeting });
 } catch (error){
