@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   username: {
@@ -9,8 +9,12 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  watchlist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Watchlist",
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
