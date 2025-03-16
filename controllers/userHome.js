@@ -18,11 +18,18 @@ try{
   const genreFilter = req.query.genre && req.query.genre !== 'All' ? { genre: req.query.genre } : {};
   const ratingFilter = req.query.minRating && req.query.minRating !== 'All' ? {rating: {$gte: Math.floor(parseFloat(req.query.minRating))}}: {}
 
-  const combo = {...genreFilter, ...ratingFilter}
+  const filters = {...genreFilter, ...ratingFilter}
 
-  const movies = await Movie.find(combo);
+  //Pagination
+  const itemsPerPage = 20;
+  const pageNum = parseInt(req.query.pageNum) || 1 // Getting page number and setting defult page number 
+  const totalMovies = await Movie.countDocuments(filters) //counts total items in doc
 
-  res.render("user/homepage", {movies, greeting });
+  const movies = await Movie.find(filters)
+      .limit(itemsPerPage) //limits how many movies are displayed
+      .skip((pageNum - 1) * itemsPerPage) //skips movies from prev pages
+
+  res.render("user/homepage", {movies, greeting, currentPage:pageNum, totalOfPages: Math.ceil(totalMovies/itemsPerPage) });
 } catch (error){
   console.log(error);
   res.redirect('/')
