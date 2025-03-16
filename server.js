@@ -10,6 +10,7 @@ const path = require('path')
 
 const authController = require('./controllers/auth.js');
 const userHomeController = require('./controllers/userHome.js')
+const showController = require("./controllers/show.js")
 const isSignedIn = require("./middleware/signed-in.js");
 const passUserToView = require("./middleware/pass-user-to-view.js");
 
@@ -38,6 +39,7 @@ app.use(
 
 app.use(passUserToView);
 app.use('/user', userHomeController)
+app.use('/user',showController)
 
 app.get('/', (req, res) => {
   if(req.session.user){
