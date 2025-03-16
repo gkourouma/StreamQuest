@@ -11,6 +11,9 @@ const movieSchema = new mongoose.Schema(
     rating: Number,
     releaseYear: Number,
     run_time: Number,
+    poster: {
+      type: String,
+    }
   },
   { collection: "2024_releases" }
 );
