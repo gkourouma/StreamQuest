@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch List</title>
+  </head>
+  <body>
+    <%- include('../partials/watchlist-navbar.ejs') %>
+    <h1>Your Watchlist</h1>
+
+    <% if (watchlists.length > 0) { %>
+    <ul>
+      <% watchlists.forEach(movie => { %>
+      <li>
+        <h2><%= movie.title %></h2>
+        <img src="<%= movie.poster %>" alt="<%= movie.title %>" width="100" />
+        <p><strong>Genre:</strong> <%= movie.genre %></p>
+        <p><strong>Rating:</strong> <%= movie.rating %></p>
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <p>You Have No Movies or TV Shows in Your Watchlist. Create a new one now!</p>
+    <% } %>
+  </body>
+</html>
