@@ -10,7 +10,7 @@ const movieSchema = new mongoose.Schema(
     overview: String,
     rating: Number,
     releaseYear: Number,
-    run_time: Number,
+    runTime: Number,
     poster: {
       type: String,
     }
