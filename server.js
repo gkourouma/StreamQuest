@@ -11,6 +11,7 @@ const path = require('path')
 const authController = require('./controllers/auth.js');
 const userHomeController = require('./controllers/userHome.js')
 const showController = require("./controllers/show.js")
+const watchlistController = require("./controllers/watchlist.js")
 const isSignedIn = require("./middleware/signed-in.js");
 const passUserToView = require("./middleware/pass-user-to-view.js");
 
@@ -39,13 +40,15 @@ app.use(
 
 app.use(passUserToView);
 app.use('/user', userHomeController)
+app.use('/user', watchlistController)
 app.use('/user',showController)
+
 
 app.get('/', (req, res) => {
   if(req.session.user){
-    res.redirect('views/user/homepage')
+    res.redirect('/user/homepage')
   } else {
-  res.render('index',)}
+  res.render('index')}
 });
 
 app.use('/auth', authController);
