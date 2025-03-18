@@ -26,6 +26,15 @@
             <li>
               <strong><%= review.user.username %>:</strong>
               <p><%= review.content %></p>
+
+              <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=PUT"  method="POST">
+                <textarea name="content" id="content" value="<%= review.content %>" placeholder="Edit Your Review" required></textarea>
+                <button type="submit">Edit</button>
+              </form>
+
+              <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+              </form>
             </li>
             <% }); %>
           </ul>
