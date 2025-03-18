@@ -5,11 +5,12 @@ const Movie = require("../models/movie.js");
 
 router.get("/watchlist", async (req, res) => {
   try {
-    const user = await User.findById(req.session.user._id).populate(
-      "watchlist"
-    );
+    const user = await User.findById(req.session.user._id)
+      .populate("watchlist")
+      .populate("watchlist.reviews.user", "username")
 
     res.render("user/watchlist", { watchlists: user.watchlist });
+
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
@@ -33,5 +34,27 @@ router.post("/watchlist/:movieId/add", async (req, res) => {
     res.redirect("/");
   }
 });
+
+router.post("/watchlist/:movieId/review", async (req, res) =>{
+  try {
+    console.log("Session user:", req.session.user);
+    const movieId = req.params.movieId
+    const user = await User.findById(req.session.user._id)
+    const movie = await Movie.findById(movieId)
+
+    const newReview ={
+      user: user._id,
+      content: req.body.content
+    }
+
+    movie.reviews.push(newReview)
+    await movie.save()
+    res.redirect("/user/watchlist")
+
+  } catch (error) {
+    console.log(error);
+    res.redirect("/")
+  }
+})
 
 module.exports = router;
