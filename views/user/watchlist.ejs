@@ -18,16 +18,36 @@
         <p><strong>Genre:</strong> <%= movie.genre %></p>
         <p><strong>Rating:</strong> <%= movie.rating %></p>
 
+        <div class="reviews">
+          <strong>Reviews:</strong>
+          <% if (movie.reviews.length > 0) { %>
+          <ul>
+            <% movie.reviews.forEach(review => { %>
+            <li>
+              <strong><%= review.user.username %>:</strong>
+              <p><%= review.content %></p>
+            </li>
+            <% }); %>
+          </ul>
+          <% } %>
+        </div>
+
         <form action="/user/watchlist/<%= movie._id %>/review" method="post">
-          <textarea name="content" id="content" placeholder="Add a Review" required></textarea>
+          <textarea
+            name="content"
+            id="content"
+            placeholder="Add a Review"
+            required
+          ></textarea>
           <button type="submit">Submit Review</button>
         </form>
-        
       </li>
       <% }) %>
     </ul>
     <% } else { %>
-    <p>You Have No Movies or TV Shows in Your Watchlist. Create a new one now!</p>
+    <p>
+      You Have No Movies or TV Shows in Your Watchlist. Create a new one now!
+    </p>
     <% } %>
     <a href="/user/homepage">Add Movies or TV Shows to Watchlist</a>
   </body>
