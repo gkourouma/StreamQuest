@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StreamQuest</title>
-</head>
-<body>
-  <%- include('./partials/_navbar.ejs') %>
-  <% if (user) { %>
-    <h1>Welcome to the app, <%= user.username %>!</h1>
-    <p>
-      <a href="/auth/sign-out">Sign out</a>
-    </p>
-  <% } else { %>
-    <h1>Welcome to StreamQuest</h1>
-    <p>Create Your Ultimate Watchlist to Track and Discover the Best Movies and TV Shows of 2024 and 2025</p>
-    <p>Start Your Quest Now!</p>
-    <p>
-      <a href="/auth/sign-up">Sign up</a> or
-      <a href="/auth/sign-in">Sign in</a>.
-    </p>
-  <% } %>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>StreamQuest</title>
+  </head>
+  <body>
+    <div class="navbar"><%- include('./partials/_navbar.ejs') %></div>
+
+    <div class="background">
+      <div class="tilted-collage"></div>
+    </div>
+
+    <div class="welcomeContainer">
+      <h1 class="header">Welcome to StreamQuest</h1>
+      <p class="welcomeMessage">
+        Create Your Ultimate Watchlist to Track and Discover the Best Movies and
+        TV Shows of 2024 and 2025
+      </p>
+      <p>Start Your Quest Now!</p>
+    </div>
+      <div class="loginContainer">
+        <div class="sign-up">
+          <a href="/auth/sign-up">Sign up</a>
+        </div>
+        <div class="sign-in">
+          <a href="/auth/sign-in">Sign in</a>
+        </div>
+    </div>
+  </body>
 </html>
