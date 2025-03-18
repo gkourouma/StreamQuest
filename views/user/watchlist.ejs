@@ -9,6 +9,7 @@
     <%- include('../partials/watchlist-navbar.ejs') %>
     <h1>Your Watchlist</h1>
 
+    <div class="watchlist">
     <% if (watchlists.length > 0) { %>
     <ul>
       <% watchlists.forEach(movie => { %>
@@ -17,6 +18,11 @@
         <img src="<%= movie.poster %>" alt="<%= movie.title %>" width="100" />
         <p><strong>Genre:</strong> <%= movie.genre %></p>
         <p><strong>Rating:</strong> <%= movie.rating %></p>
+
+        <form action="/user/watchlist/<%= movie._id %>?_method=DELETE" method="post">
+          <button type="submit">Delete from Watchlist</button>
+        </form>
+      </div>
 
         <div class="reviews">
           <strong>Reviews:</strong>
