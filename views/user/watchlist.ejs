@@ -17,11 +17,18 @@
         <img src="<%= movie.poster %>" alt="<%= movie.title %>" width="100" />
         <p><strong>Genre:</strong> <%= movie.genre %></p>
         <p><strong>Rating:</strong> <%= movie.rating %></p>
+
+        <form action="/user/watchlist/<%= movie._id %>/review" method="post">
+          <textarea name="content" id="content" placeholder="Add a Review" required></textarea>
+          <button type="submit">Submit Review</button>
+        </form>
+        
       </li>
       <% }) %>
     </ul>
     <% } else { %>
     <p>You Have No Movies or TV Shows in Your Watchlist. Create a new one now!</p>
     <% } %>
+    <a href="/user/homepage">Add Movies or TV Shows to Watchlist</a>
   </body>
 </html>
