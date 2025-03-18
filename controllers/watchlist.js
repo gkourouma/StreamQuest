@@ -60,4 +60,36 @@ router.post("/watchlist/:movieId/review", async (req, res) => {
   }
 });
 
+router.put("/watchlist/:movieId/review/:reviewId", async (req, res) =>{
+  try {
+    const {movieId, reviewId} = req.params
+    const movie = await Movie.findById(movieId)
+    const review = movie.reviews.id(reviewId)
+
+    review.content = req.body.content
+    await movie.save()
+    res.redirect("/user/watchlist")
+    
+  } catch (error) {
+    console.log(error);
+    res.redirect("/")
+  }
+})
+
+router.delete("/watchlist/:movieId/review/:reviewId", async (req, res) =>{
+  try {
+    const {movieId, reviewId} = req.params
+    const movie = await Movie.findById(movieId)
+    const review = movie.reviews.id(reviewId)
+
+    movie.reviews.pull(reviewId)
+    await movie.save()
+    res.redirect("/user/watchlist")
+
+  } catch (error) {
+    console.log(error);
+    res.redirect("/")
+  }
+})
+
 module.exports = router;
