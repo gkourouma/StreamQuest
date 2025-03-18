@@ -39,6 +39,21 @@ router.post("/watchlist/:movieId/add", async (req, res) => {
   }
 });
 
+router.delete("/watchlist/:movieId", async (req, res) => {
+  try {
+    const movieId = req.params.movieId;
+    const user = await User.findById( req.session.user._id);
+
+    user.watchlist.pull(movieId)
+    await user.save()
+    res.redirect("/user/watchlist");
+
+  } catch (error) {
+    console.log(error);
+    res.redirect("/");
+  }
+});
+
 router.post("/watchlist/:movieId/review", async (req, res) => {
   try {
     console.log("Session user:", req.session.user);
@@ -60,36 +75,34 @@ router.post("/watchlist/:movieId/review", async (req, res) => {
   }
 });
 
-router.put("/watchlist/:movieId/review/:reviewId", async (req, res) =>{
+router.put("/watchlist/:movieId/review/:reviewId", async (req, res) => {
   try {
-    const {movieId, reviewId} = req.params
-    const movie = await Movie.findById(movieId)
-    const review = movie.reviews.id(reviewId)
+    const { movieId, reviewId } = req.params;
+    const movie = await Movie.findById(movieId);
+    const review = movie.reviews.id(reviewId);
 
-    review.content = req.body.content
-    await movie.save()
-    res.redirect("/user/watchlist")
-    
+    review.content = req.body.content;
+    await movie.save();
+    res.redirect("/user/watchlist");
   } catch (error) {
     console.log(error);
-    res.redirect("/")
+    res.redirect("/");
   }
-})
+});
 
-router.delete("/watchlist/:movieId/review/:reviewId", async (req, res) =>{
+router.delete("/watchlist/:movieId/review/:reviewId", async (req, res) => {
   try {
-    const {movieId, reviewId} = req.params
-    const movie = await Movie.findById(movieId)
-    const review = movie.reviews.id(reviewId)
+    const { movieId, reviewId } = req.params;
+    const movie = await Movie.findById(movieId);
+    const review = movie.reviews.id(reviewId);
 
-    movie.reviews.pull(reviewId)
-    await movie.save()
-    res.redirect("/user/watchlist")
-
+    movie.reviews.pull(reviewId);
+    await movie.save();
+    res.redirect("/user/watchlist");
   } catch (error) {
     console.log(error);
-    res.redirect("/")
+    res.redirect("/");
   }
-})
+});
 
 module.exports = router;
