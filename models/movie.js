@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+const reviewSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  }
+});
+
 const movieSchema = new mongoose.Schema(
   {
     title: {
@@ -13,7 +25,8 @@ const movieSchema = new mongoose.Schema(
     runTime: Number,
     poster: {
       type: String,
-    }
+    },
+    reviews: [reviewSchema]
   },
   { collection: "2024_releases" }
 );
