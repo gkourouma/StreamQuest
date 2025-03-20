@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+body {
+  background: #0b0b01;
+  color: white;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.navbar {
+  background-color: #0b0b01;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 10px;
+}
+
+.sign-in {
+  width: 520px;
+  height: 773px;
+  margin-top: 50px;
+  border: 1px solid black;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.6),
+    inset 10px 10px 15px rgba(0, 0, 0, 0.6),
+    inset -10px -10px 15px rgba(50, 50, 50, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.sign-in input {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 48px;
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.sign-in button {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 40px 100px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.sign-in button:hover {
+  background-color: rgba(0, 255, 255, 0.6);
+  color: #f2f2f2;
+}
+
+.signUpLink {
+  margin: 20px 0;
+}
+
+.signUpLink a {
+  color: white;
+}
+
+.home {
+  text-align: center;
+}
+
+.home a {
+  color: #f2f2f2;
+}

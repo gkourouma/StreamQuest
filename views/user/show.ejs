@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="/image/android-chrome-512x512.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/css/show.css" />
     <title><%= movie.title %></title>
-</head>
-<body>
-    <h1><%= movie.title %></h1>
-    <img src="<%= movie.poster %>" alt="<%= movie.title %>">
-    <h3><%= movie.overview %></h3>
-    <p><%= movie.genre %></p>
-    <%= movie.releaseYear %>
-    <p>Rating: <%= movie.rating %> out of 10</p>
-    <%= movie.runTime %>
+  </head>
+  <body>
+    <div class="navbar"><%- include('../partials/_navbar.ejs') %></div>
 
-  <form action="/user/watchlist/<%= movie._id %>/add" method="POST">
-    <button type="submit">Add to Watchlist</button>
-  </form>
+    <div class="movie-container">
+      <div class="movie-info">
+        <h1><%= movie.title %></h1>
+        <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+        <h3><%= movie.overview %></h3>
+        <p class="genre"><%= movie.genre %></p>
+        <%= movie.releaseYear %>
+        <p>Rating: <%= movie.rating %> out of 10</p>
+        <%= movie.runTime %>
+      </div>
 
-  <a href="/user/homepage">Back to Home</a>
-  <a href="/user/watchlist">Go to Watchlist</a>
-</body>
+      <form action="/user/watchlist/<%= movie._id %>/add" method="POST">
+        <button type="submit">Add to Watchlist</button>
+      </form>
+    </div>
+  </body>
 </html>

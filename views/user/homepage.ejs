@@ -3,72 +3,88 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/image/android-chrome-512x512.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/userhomepage.css" />
     <title>StreamQuest</title>
   </head>
   <body>
-    <%- include('../partials/_navbar.ejs') %>
-    <h1><%= greeting %>, <%= user.username %></h1>
-    <p>Let's Add Some New Movies or TV Shows to Your Watchlist!</p>
+    <div class="navbar"><%- include('../partials/_navbar.ejs') %></div>
+
+    <div class="header">
+      <h1><%= greeting %>, <%= user.username %></h1>
+      <p>Let's Add Some New Movies or TV Shows to Your Watchlist!</p>
+    </div>
 
     <h2>Movies and TV Shows</h2>
 
-    <form action="/user/homepage" method="get">
-      <label for="genre">Filter by Genre:</label>
-      <select name="genre" id="genre">
-        <option value="All">All</option>
-        <option value="Action">Action</option>
-        <option value="Adventure">Adventure</option>
-        <option value="Animation">Animation</option>
-        <option value="Biography">Biography</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Crime">Crime</option>
-        <option value="Drama">Drama</option>
-        <option value="Family">Family</option>
-      </select>
+    <div class="filter-container">
+      <form action="/user/homepage" method="get">
+        <div>
+          <label for="genre">Filter by Genre:</label>
+          <select name="genre" id="genre">
+            <option value="All">All</option>
+            <option value="Action">Action</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Animation">Animation</option>
+            <option value="Biography">Biography</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Crime">Crime</option>
+            <option value="Drama">Drama</option>
+            <option value="Family">Family</option>
+          </select>
+        </div>
 
-      <label for="minRating">Min Rating:</label>
-      <select name="minRating" id="minRating">
-        <option value="All">All</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
+        <div>
+          <label for="minRating">Min Rating:</label>
+          <select name="minRating" id="minRating">
+            <option value="All">All</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
 
-      <button type="submit">Filter</button>
-    </form>
+        <button type="submit">Filter</button>
+      </form>
+    </div>
 
-    <p>Results: <%= movies.length %></p>
+    <p>Results: <%= totalMovies %></p>
 
-    <ul>
+    <div class="movie-container">
+     
       <% if(movies.length > 0) { %> <% movies.forEach(movie => { %>
-      <li>
+      <div class="movie-info">
         <a href="/user/<%= movie._id %>">
-          <strong><%= movie.title %></strong> - <%= movie.genre %> - <%=
-          movie.rating %></a
-        >
-      </li>
+          <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          <strong><%= movie.title %></strong> <br />
+          <%= movie.genre %> <br />
+          Rating: <%= movie.rating %>
+        </a>
+      </div>
       <% }) %> <% } else { %>
       <p>No Movies/TV Shows Available.</p>
       <% } %>
+     
+    </div>
 
-      <div class="pagenav">
-        <% if (currentPage > 1 ) { %>
-        <a href="/user/homepage?pageNum=<%= currentPage - 1 %>"> Previous</a>
-        <% } %>
+    <div class="pagenav">
+      <% if (currentPage > 1 ) { %>
+      <a href="/user/homepage?pageNum=<%= currentPage - 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>"> Previous</a>
+      <% } %>
 
-        <p>Page <%= currentPage %> of <%= totalOfPages %></p>
+      <p>Page <%= currentPage %> of <%= totalOfPages %></p>
 
-        <% if (currentPage < totalOfPages ) { %>
-        <a href="/user/homepage?pageNum=<%= currentPage + 1 %>"> Next</a>
-        <% } %>
-      </div>
-    </ul>
+      <% if (currentPage < totalOfPages ) { %>
+      <a href="/user/homepage?pageNum=<%= currentPage + 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>"> Next</a>
+      <% } %>
+    </div>
+   
   </body>
 </html>

@@ -10,11 +10,11 @@ router.get("/watchlist", async (req, res) => {
       path: "watchlist",
       populate: {
         path: "reviews.user",
-        select: "username",
+        select: "username _id",
       },
     });
 
-    res.render("user/watchlist", { watchlists: user.watchlist });
+    res.render("user/watchlist", { watchlists: user.watchlist, currentUserId: req.session.user._id });
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);

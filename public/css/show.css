@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat";
+}
+
+body {
+  background: #0b0b01;
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  color: #f2f2f2;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  overflow-x: hidden;
+}
+
+nav {
+  background-color: #0b0b01;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 10px;
+}
+
+.navbar {
+  width: 100%;
+}
+
+.navlinks {
+  display: flex;
+  gap: 20px;
+}
+
+.navlinks a {
+  text-decoration: none;
+  color: #f2f2f2;
+}
+
+.navlinks a:hover {
+  text-decoration: underline;
+}
+
+.movie-container {
+  width: 70%;
+  background: rgba(20, 19, 19, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.6),
+    inset 10px 10px 15px rgba(0, 0, 0, 0.6),
+    inset -10px -10px 15px rgba(50, 50, 50, 0.2);
+  padding: 20px;
+}
+
+.movie-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  line-height: 30px;
+}
+
+.movie-info img {
+  width: 500px;
+  height: 700px;
+  border-radius: 8px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+}
+
+.movie-info .genre {
+  word-spacing: 30px;
+}
+
+form button {
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+form button:hover {
+  background-color: #d91284;
+  color: #f2f2f2;
+  cursor: pointer;
+}

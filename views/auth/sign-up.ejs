@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up</title>
-</head>
-<body>
-  <h1>Create a new account!</h1>
-  <form action="/auth/sign-up" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required />
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required />
-    <label for="confirmPassword">Confirm Password:</label>
-    <input 
-      type="password"
-      name="confirmPassword"
-      id="confirmPassword"
-      required 
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="/image/android-chrome-512x512.png"
+      type="image/x-icon"
     />
-    <button type="submit">Sign up</button>
-  </form>
-</body>
+    <link rel="stylesheet" href="/css/signup.css" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div class="navbar"><%- include('../partials/_navbar.ejs') %></div>
+    <div class="sign-up">
+      <h1>Create a new account!</h1>
+      <form action="/auth/sign-up" method="POST">
+        <div class="input">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter Username"
+            required
+          />
+        </div>
+
+        <div class="input">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter Password"
+            required
+          />
+        </div>
+
+        <div class="input">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+            required
+          />
+        </div>
+        <button type="submit">Sign up</button>
+        <p class="signInLink">
+          Already have and account? <a href="/auth/sign-in">Sign In Here</a>
+        </p>
+        <p class="home"><a href="/">Home</a></p>
+      </form>
+    </div>
+  </body>
 </html>

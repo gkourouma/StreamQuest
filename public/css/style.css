@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Playfair Display";
+}
+
+body {
+  background: #0b0b01;
+  background-size: cover;
+  background-position: center;
+  color: #f2f2f2;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.backContainer {
+  display: grid;
+  width: 100%;
+  max-width: 1200px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.pic img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.navbar {
+  background-color: #0b0b01;
+  width: 100%;
+  padding: 10px;
+
+  margin: 0px 10px;
+}
+
+.welcomeContainer {
+  background-color: rgba(0, 0, 0, 0.7);
+
+  border-radius: 20px;
+
+  box-shadow: 20px 20px 20px 40px rgba(0, 0, 0, 0.7);
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  font-weight: 400;
+  font-size: 60px;
+}
+
+.welcomeMessage {
+  font-size: 25px;
+}
+
+p {
+  font-size: 25px;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+  gap: 80px;
+}
+
+.sign-up,
+.sign-in,
+a {
+  text-decoration: none;
+  border: 1px solid black;
+  background-color: #f2f2f2;
+  color: black;
+  border-radius: 100px;
+  padding: 20px 40px;
+  font-size: 25px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.sign-in:hover,
+.sign-up:hover,
+a:hover {
+  background-color: #d91284;
+  color: #f2f2f2;
+}
