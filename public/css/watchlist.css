@@ -16,12 +16,6 @@ body {
   height: 100vh;
   max-height: 100%;
   display: block;
-  /* flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-  overflow-y: auto;
-  overflow-x: hidden; */
 }
 
 nav {
@@ -109,9 +103,15 @@ h2{
 }
 
 .reviews{
+  /* width: 50%; */
   margin-top: 20px;
   padding-top: 10px;
   border-top: 1px solid #555;
+}
+
+.review-heading{
+ line-height: 30px;
+color: #D91284;
 }
 
 .reviews p{
@@ -148,3 +148,6 @@ button:hover{
   color: #f2f2f2;
 }
 
+.edit-delete form{
+  display: inline-block;
+}
