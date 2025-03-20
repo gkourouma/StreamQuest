@@ -16,70 +16,56 @@
     <h1 class="header"><%= user.username %>'s Watchlist</h1>
 
     <div class="watchlist-container">
-      <div class="watchlist">
-        <% if (watchlists.length > 0) { %> <% watchlists.forEach(movie => { %>
+      <% if (watchlists.length > 0) { %> 
+        <% watchlists.forEach((movie) => { %>
 
-        <h2><%= movie.title %></h2>
-        <img src="<%= movie.poster %>" alt="<%= movie.title %>" width="100" />
-        <p><strong>Genre:</strong> <%= movie.genre %></p>
-        <p><strong>Rating:</strong> <%= movie.rating %></p>
+          <div class="movie-card">
+            <h2><%= movie.title %></h2>
+             <img src="<%= movie.poster %>" alt="<%= movie.title %>" class="movie-poster"/>
 
-        <form
-          action="/user/watchlist/<%= movie._id %>?_method=DELETE"
-          method="post"
-        >
-          <button type="submit">Delete from Watchlist</button>
-        </form>
-      </div>
+            <div class="movie-info">
+              <p><strong>Genre: </strong> <%= movie.genre %></p> <br>
+              <p><strong>Rating: </strong> <%= movie.rating %></p> <br>
+              <p><strong>Overview: </strong><%= movie.overview %></p>
 
-      <div class="reviews">
-        <strong>Reviews:</strong> <br />
-        <% if (movie.reviews.length > 0) { %> <% movie.reviews.forEach(review =>
-        { %>
+              <form action="/user/watchlist/<%= movie._id %>?_method=DELETE" method="post">
+                <button type="submit">Delete from Watchlist</button>
+              </form>
+            </div>
 
-        <strong><%= review.user.username %>:</strong>
-        <p><%= review.content %></p>
+            <div class="reviews">
+              <strong>Reviews:</strong> <br />
+              <% if (movie.reviews.length > 0) { %> 
+                <% movie.reviews.forEach((review)=> { %>
+                  <strong><%= review.user.username %>:</strong>
+                  <p><%= review.content %></p>
 
-        <% if (review.user._id.toString() === currentUserId.toString()) { %>
-        <form
-          action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=PUT"
-          method="POST"
-        >
-          <textarea
-            name="content"
-            id="content"
-            value="<%= review.content %>"
-            placeholder="Edit Your Review"
-            required
-          ></textarea>
-          <button type="submit">Edit</button>
-        </form>
+                  <% if (review.user._id.toString() === currentUserId.toString()) { %>
+                    <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=PUT" method="POST">
+                      <textarea name="content" id="content" placeholder="Edit Your Review" required><%= review.content %></textarea>
+                      <button type="submit" class="edit-button">Edit</button>
+                    </form>
 
-        <form
-          action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=DELETE"
-          method="POST"
-        >
-          <button type="submit">Delete</button>
-        </form>
-        <% } %> <% }); %> <% } %>
-      </div>
+                    <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=DELETE" method="POST">
+                      <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                  <% } %> 
+                <% }); %> 
+              <% } else { %>
+                <p> No Reviews Available </p>
+              <% } %>
+            </div>
 
-      <form action="/user/watchlist/<%= movie._id %>/review" method="post">
-        <textarea
-          name="content"
-          id="content"
-          placeholder="Add a Review"
-          required
-        ></textarea>
-        <button type="submit">Submit Review</button>
-      </form>
-
-      <% }) %> <% } else { %>
-      <p>
-        You Have No Movies or TV Shows in Your Watchlist. Create a new one now!
-      </p>
+            <form action="/user/watchlist/<%= movie._id %>/review" method="post">
+              <textarea name="content" id="content" placeholder="Add a Review" required></textarea>
+              <button type="submit" class="submit-review">Submit Review</button>
+            </form>
+          </div>
+        <% }) %> 
+      <% } else { %>
+        <p> You Have No Movies or TV Shows in Your Watchlist. Create a new one now!</p>
+        <a href="/user/homepage">Add Movies or TV Shows to Watchlist</a>
       <% } %>
-      <a href="/user/homepage">Add Movies or TV Shows to Watchlist</a>
     </div>
   </body>
 </html>
