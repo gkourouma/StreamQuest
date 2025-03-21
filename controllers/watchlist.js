@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.js");
 const Movie = require("../models/movie.js");
-const { populate } = require("dotenv");
 
 router.get("/watchlist", async (req, res) => {
   try {

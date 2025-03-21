@@ -26,14 +26,14 @@ router.get("/homepage", async (req, res) => {
 
     const filters = { ...genreFilter, ...ratingFilter };
 
-    //Pagination
+  
     const itemsPerPage = 20;
-    const pageNum = parseInt(req.query.pageNum) || 1; // Getting page number and setting defult page number
-    const totalMovies = await Movie.countDocuments(filters); //counts total items in doc
+    const pageNum = parseInt(req.query.pageNum) || 1;
+    const totalMovies = await Movie.countDocuments(filters); 
 
     const movies = await Movie.find(filters)
-      .limit(itemsPerPage) //limits how many movies are displayed
-      .skip((pageNum - 1) * itemsPerPage); //skips movies from prev pages
+      .limit(itemsPerPage) 
+      .skip((pageNum - 1) * itemsPerPage); 
 
     res.render("user/homepage", {
       movies,
