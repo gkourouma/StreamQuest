@@ -81,6 +81,9 @@ nav {
 
 .movie-card:hover {
   transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.6),
+    inset 10px 10px 15px rgba(0, 0, 0, 0.6),
+    inset -10px -10px 15px rgba(50, 50, 50, 0.2);
 }
 
 .movie-poster {
