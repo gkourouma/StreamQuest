@@ -92,6 +92,21 @@ nav {
   color: #f2f2f2;
 }
 
+#search {
+  padding: .2rem;
+  border-radius: .5rem;
+}
+
+#genre{
+  padding: .2rem;
+  border-radius: .5rem;
+}
+
+#minRating{
+  padding: .2rem;
+  border-radius: .5rem;
+}
+
 .movie-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
