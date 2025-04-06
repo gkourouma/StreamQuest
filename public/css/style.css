@@ -28,6 +28,27 @@ body {
   gap: 20px;
 }
 
+/* For small screens, adjust the grid to fewer columns */
+@media (max-width: 1200px) {
+  .backContainer {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for medium screens */
+  }
+}
+
+@media (max-width: 900px) {
+  .backContainer {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .backContainer {
+    grid-template-columns: 1fr; /* 1 column for mobile screens */
+    gap: 10px; /* Reduce gap for smaller screens */
+  }
+}
+
+
 .pic img {
   width: 100%;
   height: auto;
@@ -62,6 +83,13 @@ body {
   font-size: 60px;
 }
 
+/* For smaller screens, adjust the header size */
+@media (max-width: 900px) {
+  .header {
+    font-size: 50px;
+  }
+}
+
 .welcomeMessage {
   font-size: 25px;
 }
@@ -77,6 +105,13 @@ p {
   gap: 80px;
 }
 
+/* For smaller screens, reduce the gap between buttons */
+@media (max-width: 600px) {
+  .loginContainer {
+    gap: 40px;
+  }
+}
+
 .sign-up,
 .sign-in,
 a {
@@ -88,6 +123,16 @@ a {
   padding: 20px 40px;
   font-size: 25px;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* For smaller screens, reduce button padding and font size */
+@media (max-width: 600px) {
+  .sign-up,
+  .sign-in,
+  a {
+    padding: 15px 30px;
+    font-size: 18px;
+  }
 }
 
 .sign-in:hover,
