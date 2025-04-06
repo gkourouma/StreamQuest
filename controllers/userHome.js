@@ -24,16 +24,20 @@ router.get("/homepage", async (req, res) => {
         ? { rating: { $gte: Math.floor(parseFloat(req.query.minRating)) } }
         : {};
 
-    const filters = { ...genreFilter, ...ratingFilter };
+    const searchFilter = req.query.search
+      ? { title: { $regex: req.query.search, $options: "i" } }
+      : {}; //$regex allows partial matching, $options: 'i' makes it case-insensitive
 
-  
+    const filters = { ...genreFilter, ...ratingFilter, ...searchFilter };
+
     const itemsPerPage = 20;
     const pageNum = parseInt(req.query.pageNum) || 1;
-    const totalMovies = await Movie.countDocuments(filters); 
+    const totalMovies = await Movie.countDocuments(filters);
+
 
     const movies = await Movie.find(filters)
-      .limit(itemsPerPage) 
-      .skip((pageNum - 1) * itemsPerPage); 
+      .limit(itemsPerPage)
+      .skip((pageNum - 1) * itemsPerPage);
 
     res.render("user/homepage", {
       movies,
@@ -43,6 +47,7 @@ router.get("/homepage", async (req, res) => {
       totalOfPages: Math.ceil(totalMovies / itemsPerPage),
       genre: req.query.genre || "",
       minRating: req.query.minRating || "",
+      search: req.query.search || ""
     });
   } catch (error) {
     console.log(error);
