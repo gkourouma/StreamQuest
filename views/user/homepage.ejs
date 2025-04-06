@@ -20,45 +20,62 @@
     <div class="filter-container">
       <form action="/user/homepage" method="get">
         <div>
-          <label for="genre">Filter by Genre:</label>
-          <select name="genre" id="genre">
-            <option value="All">All</option>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="Animation">Animation</option>
-            <option value="Biography">Biography</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Crime">Crime</option>
-            <option value="Drama">Drama</option>
-            <option value="Family">Family</option>
-          </select>
+          <label for="search"></label>
+          <input type="text" name="search" id="search" value="<%= search %>" placeholder="Search">
+          
         </div>
 
         <div>
-          <label for="minRating">Min Rating:</label>
+          <label for="genre"></label>
+          <select name="genre" id="genre">
+            <option value="" <%= !genre ? "selected" : "" %> disabled>Select a Genre</option>
+            <option value="All" <%= genre === "All" ? "selected" : "" %>>All</option>
+            <option value="Action" <%= genre === "Action" ? "selected" : "" %>>Action</option>
+            <option value="Adventure" <%= genre === "Adventure" ? "selected" : "" %>>Adventure</option>
+            <option value="Animation" <%= genre === "Animation" ? "selected" : "" %>>Animation</option>
+            <option value="Biography" <%= genre === "Biography" ? "selected" : "" %>>Biography</option>
+            <option value="Comedy" <%= genre === "Comedy" ? "selected" : "" %>>Comedy</option>
+            <option value="Crime" <%= genre === "Crime" ? "selected" : "" %>>Crime</option>
+            <option value="Drama" <%= genre === "Drama" ? "selected" : "" %>>Drama</option>
+            <option value="Family" <%= genre === "Family" ? "selected" : "" %>>Family</option>
+          </select>          
+        </div>
+
+        <div>
+          <label for="minRating"></label>
           <select name="minRating" id="minRating">
-            <option value="All">All</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            <option value="" <%= !minRating ? "selected" : "" %> disabled>Minimum Rating</option>
+            <option value="All" <%= genre === "All" ? "selected" : "" %>>All</option>
+            <% for (let i = 1; i <= 10; i++) { %>
+              <option value="<%= i %>" <%= minRating == i ? "selected" : "" %>><%= i %></option>
+            <% } %>
           </select>
         </div>
 
         <button type="submit">Filter</button>
-      </form>
+      </form>   
+      <form action="/user/homepage" method="get">
+        <button type="submit">Reset</button>
+      </form> 
     </div>
 
     <p>Results: <%= totalMovies %></p>
 
+    <% if (search || genre !== "All" || minRating !== "All") { %>
+      <div class="filter-message">
+        <p>
+          Showing results
+          <% if (search) { %> for "<%= search %>" <% } %>
+          <% if (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %>
+          <% if (minRating && minRating !== "All") { %> with minimum rating of <%= minRating %> <% } %>
+        </p>
+      </div>
+    <% } %>
+    
+
     <div class="movie-container">
-     
+    
+    
       <% if(movies.length > 0) { %> <% movies.forEach(movie => { %>
       <div class="movie-info">
         <a href="/user/<%= movie._id %>">
@@ -76,13 +93,13 @@
 
     <div class="pagenav">
       <% if (currentPage > 1 ) { %>
-      <a href="/user/homepage?pageNum=<%= currentPage - 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>"> Previous</a>
+      <a href="/user/homepage?pageNum=<%= currentPage - 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>&search=<%= search || "" %>"> Previous</a>
       <% } %>
 
       <p>Page <%= currentPage %> of <%= totalOfPages %></p>
 
       <% if (currentPage < totalOfPages ) { %>
-      <a href="/user/homepage?pageNum=<%= currentPage + 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>"> Next</a>
+      <a href="/user/homepage?pageNum=<%= currentPage + 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>&search=<%= search || "" %>"> Next</a>
       <% } %>
     </div>
    
