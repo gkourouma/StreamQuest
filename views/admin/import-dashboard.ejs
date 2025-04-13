@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <h1>Admin Import Dashboard</h1>
+
+    <h2>Import Movies by Genre</h2>
+    <ul>
+      <% Object.entries(genreMap).forEach(([id, name]) => { %>
+      <li>
+        <a href="/admin/import/discover?genre=<%= id %>">Import <%= name %></a>
+      </li>
+      <% }) %>
+    </ul>
+
+    <hr />
+
+    <h2>Admin Update Actions</h2>
+    <ul>
+      <li><a href="/admin/update-all-movies">Update All Movie Details</a></li>
+      <li>
+        <a href="/admin/batch-update-type">Update All Types (Movie or TV)</a>
+      </li>
+      <li>
+        <a href="/admin/update-similar">Update Similar Recommendations</a>
+      </li>
+      <li><a href="/admin/update-cast-only">Update Only Cast Info</a></li>
+      <h2>Import by Category</h2>
+
+      <form action="/admin/import" method="get" style="margin-bottom: 2rem">
+        <label for="category">Select a category:</label>
+        <select name="category" id="category">
+          <option value="upcoming">Upcoming</option>
+          <option value="popular">Popular</option>
+          <option value="top_rated">Top Rated</option>
+          <option value="discover">Discover by Genre</option>
+        </select>
+
+        <label for="genre">Genre ID (only for discover):</label>
+        <input
+          type="text"
+          name="genre"
+          id="genre"
+          placeholder="e.g. 28 for Action"
+        />
+
+        <button type="submit">Import</button>
+      </form>
+
+      <h2>Genre ID</h2>
+      <p>   
+        The following are the genre IDs you can use for importing movies: <br>
+                "id": 28,
+                "name": "Action" <br> <br>
+             
+                "id": 12,
+                "name": "Adventure" <br> <br>
+              
+                "id": 16,
+                "name": "Animation" <br> <br>
+             
+                "id": 35,
+                "name": "Comedy" <br> <br>
+             
+                "id": 80,
+                "name": "Crime" <br> <br>
+              
+                "id": 99,
+                "name": "Documentary" <br> <br>
+              
+                "id": 18,
+                "name": "Drama" <br> <br>
+             
+                "id": 10751,
+                "name": "Family" <br> <br>
+              
+                "id": 14,
+                "name": "Fantasy" <br> <br>
+              
+                "id": 36,
+                "name": "History" <br> <br>
+              
+                "id": 27,
+                "name": "Horror" <br> <br>
+             
+                "id": 10402,
+                "name": "Music" <br> <br>
+              
+                "id": 9648,
+                "name": "Mystery" <br> <br>
+              
+                "id": 10749,
+                "name": "Romance" <br> <br>
+              
+                "id": 878,
+                "name": "Science Fiction" <br> <br>
+             
+                "id": 10770,
+                "name": "TV Movie" <br> <br>
+              
+                "id": 53,
+                "name": "Thriller" <br> <br>
+              
+                "id": 10752,
+                "name": "War" <br> <br>
+             
+                "id": 37,
+                "name": "Western" <br> <br>
+      </p>
+    </ul>
+  </body>
+</html>
