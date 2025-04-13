@@ -14,20 +14,181 @@
   <body>
     <div class="navbar"><%- include('../partials/_navbar.ejs') %></div>
 
-    <div class="movie-container">
-      <div class="movie-info">
-        <h1><%= movie.title %></h1>
-        <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-        <h3><%= movie.overview %></h3>
-        <p class="genre"><%= movie.genre %></p>
-        <%= movie.releaseYear %>
-        <p>Rating: <%= movie.rating %> out of 10</p>
-        <%= movie.runTime %>
-      </div>
+    <div class="page-wrapper">
+      <div
+        id="hero"
+        data-tmdb-id="<%= movie.tmdbId %>"
+        style="background-image: url('<%= movie.backdrop %>')"
+      >
+        <div class="hero-overlay">
+          <h1><%= movie.title %></h1>
+          <p><%= movie.overview %></p>
+          <p><%= movie.genre %></p>
+          <% if (movie.releaseDate) { %>
+          <p>
+            Release: <%= movie.releaseDate ? new
+            Date(movie.releaseDate).toLocaleDateString("en-US", { year:
+            "numeric", month: "long", day: "numeric" }) : "Unknown" %>
+          </p>
+          <% } else { %>
+          <p>Release date unknown</p>
+          <% } %>
+          <p>Rating: <%= movie.rating || "N/A" %> out of 10</p>
+          <p>Runtime: <%= formatRuntime(movie.run_time) %></p>
+          <div class="button-container">
+            <button class="trailer-button" onclick="loadTrailer()">
+              ▶ Watch Trailer
+            </button>
+            <button class="soundtrack-button">Soundtrack</button>
+            <form action="/user/watchlist/<%= movie._id %>/add" method="POST">
+              <button type="submit">Add to Watchlist</button>
+            </form>
+          </div>
 
-      <form action="/user/watchlist/<%= movie._id %>/add" method="POST">
-        <button type="submit">Add to Watchlist</button>
-      </form>
+          <h2>Cast</h2>
+          <div class="cast-row">
+            <% const visibleCast = movie.credits?.cast ?.filter(actor =>
+            actor.profilePath) .slice(0, 4); %> <% visibleCast?.forEach(actor =>
+            { %>
+            <div class="actor-card">
+              <img
+                src="https://image.tmdb.org/t/p/w185<%= actor.profilePath %>"
+                alt="<%= actor.name %>"
+              />
+              <p>
+                <%= actor.name %> <br />
+                as <br />
+                <%= actor.character %>
+              </p>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <!-- Closing hero-overlay -->
+      </div>
+      <!-- Closing hero -->
+      <!-- More Like This Section -->
+      <!-- <h2 class="section-title">🎬 More Like This</h2> -->
+
+      <div class="carousel-section">
+        <h2 class="section-title">More Like This</h2>
+
+        <div class="carousel-wrapper">
+          <button class="arrow left" onclick="scrollRowLeft('similar-row')">
+            &#10094;
+          </button>
+
+          <div class="upcoming-scroll-container" id="similar-row">
+            <% movie.similar?.forEach(sim => { %>
+            <a href="/user/<%= movie._id %>">
+              <div class="upcoming-card">
+                <img src="<%= sim.poster %>" alt="<%= sim.title %>" />
+              </div>
+            </a>
+            <% }) %>
+          </div>
+          <button class="arrow right" onclick="scrollRight('similar-row')">
+            &#10095;
+          </button>
+        </div>
+      </div>
     </div>
+
+    <!--Footer-->
+    <footer class="footer">
+      <p>
+        &copy; <%= new Date().getFullYear() %> Gnale Kourouma. All rights
+        reserved.
+      </p>
+      <p>
+        Built with ❤️ using Node.js, Express, and MongoDB |
+        <a href="https://github.com/gnalekourouma/streamquest" target="_blank"
+          >View on GitHub</a
+        >
+      </p>
+    </footer>
+    <!-- Closing the footer -->
+
+    <!-- Trailer modal -->
+    <div id="trailer-modal" class="modal">
+      <div class="modal-content">
+        <span onclick="closeTrailer()" class="close">&times;</span>
+        <iframe
+          id="trailer-frame"
+          width="100%"
+          height="500"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+    <!-- Closing the trailer modal -->
+
+    <!-- JavaScript -->
+    <script>
+      function scrollRowLeft(id) {
+        const container = document.getElementById(id);
+        container.scrollBy({ left: -200, behavior: "smooth" });
+      }
+
+      function scrollRowRight(id) {
+        const container = document.getElementById(id);
+        container.scrollBy({ left: 200, behavior: "smooth" });
+      }
+    </script>
+
+    <script>
+      const hero = document.getElementById("hero");
+      const tmdbId = hero.dataset.tmdbId;
+      const currentBackground = hero.style.backgroundImage;
+
+      // ✅ Define loadBackdrop function globally
+      async function loadBackdrop() {
+        try {
+          const res = await fetch(
+            `https://api.themoviedb.org/3/movie/${tmdbId}/images?api_key=<%= process.env.TMDB_API_KEY %>`
+          );
+          const data = await res.json();
+          const backdrop = data.backdrops[0];
+
+          if (backdrop) {
+            hero.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${backdrop.file_path})`;
+          }
+        } catch (err) {
+          console.error("Failed to load backdrop:", err);
+        }
+      }
+
+      // ✅ Only call it if there's no backdrop set
+      if (!currentBackground || currentBackground.includes("''")) {
+        loadBackdrop();
+      }
+
+      // Trailer logic remains unchanged
+      async function loadTrailer() {
+        try {
+          const res = await fetch(
+            `https://api.themoviedb.org/3/movie/${tmdbId}/videos?api_key=<%= process.env.TMDB_API_KEY %>`
+          );
+          const data = await res.json();
+          const trailer = data.results.find(
+            (v) => v.type === "Trailer" && v.site === "YouTube"
+          );
+
+          if (trailer) {
+            const frame = document.getElementById("trailer-frame");
+            frame.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+            document.getElementById("trailer-modal").style.display = "flex";
+          }
+        } catch (err) {
+          console.error("Failed to load trailer:", err);
+        }
+      }
+
+      function closeTrailer() {
+        document.getElementById("trailer-frame").src = "";
+        document.getElementById("trailer-modal").style.display = "none";
+      }
+    </script>
   </body>
 </html>
