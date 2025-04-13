@@ -12,10 +12,13 @@ const authController = require('./controllers/auth.js');
 const userHomeController = require('./controllers/userHome.js')
 const showController = require("./controllers/show.js")
 const watchlistController = require("./controllers/watchlist.js")
+const adminController = require("./controllers/admin");
+const isAdmin = require("./middleware/is-admin");
+
 const isSignedIn = require("./middleware/signed-in.js");
 const passUserToView = require("./middleware/pass-user-to-view.js");
 
-const port = process.env.PORT ? process.env.PORT : '3000';
+const port = process.env.PORT ? process.env.PORT : '3001';
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -39,6 +42,13 @@ app.use(
 );
 
 app.use(passUserToView);
+app.use('/auth', authController);
+app.use(isSignedIn);
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/admin", isSignedIn, isAdmin, adminController);
+}
+
 app.use('/user', userHomeController)
 app.use('/user', watchlistController)
 app.use('/user',showController)
@@ -51,8 +61,8 @@ app.get('/', (req, res) => {
   res.render('index')}
 });
 
-app.use('/auth', authController);
-app.use(isSignedIn);
+// app.use('/auth', authController);
+// app.use(isSignedIn);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
