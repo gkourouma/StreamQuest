@@ -18,14 +18,42 @@ const movieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tmdbId: {
+      type: Number,
+      unique: true,
+    },    
     genre: [String],
+    type: {
+      type: String,
+      enum: ['movie', 'tv'],
+      default: 'movie'
+    },
     overview: String,
     rating: Number,
-    releaseYear: Number,
-    runTime: Number,
+    releaseDate: Date,
+    run_time: Number,
     poster: {
       type: String,
     },
+    backdrop: {
+      type: String,
+    },
+    credits: {
+      cast: [
+        {
+          name: String,
+          character: String,
+          profilePath: String
+        }
+      ],
+    },
+    similar: [
+      {
+        title: String,
+        poster: String,
+        tmdbId: Number
+      }
+    ],
     reviews: [reviewSchema]
   },
   { collection: "2024_releases" }
