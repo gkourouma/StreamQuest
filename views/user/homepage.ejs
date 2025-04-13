@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="/image/android-chrome-512x512.png" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="/image/android-chrome-512x512.png"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="/css/userhomepage.css" />
     <title>StreamQuest</title>
   </head>
@@ -15,17 +19,60 @@
       <p>Let's Add Some New Movies or TV Shows to Your Watchlist!</p>
     </div>
 
-    <h2>Movies and TV Shows</h2>
+    <div class="slideshow-container">
+      <% slides.forEach((movie, index) => { %>
+      <div
+        class="slide <%= index === 0 ? 'active' : '' %>"
+        data-trailer="<%= movie.id %>"
+      >
+        <img
+          src="https://image.tmdb.org/t/p/original<%= movie.backdrop_path %>"
+          alt="<%= movie.title %>"
+        />
+        <div class="slide-overlay">
+          <h2><%= movie.title %></h2>
+          <p><%= movie.overview %></p>
+          <button
+            class="trailer-button"
+            onclick="loadTrailer('<%= movie.id %>')"
+          >
+            ▶ Watch Trailer
+          </button>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <!-- Trailer Modal -->
+    <div id="trailer-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeTrailer()">&times;</span>
+        <iframe
+          id="trailer-frame"
+          width="100%"
+          height="500"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- <h2>Movies and TV Shows</h2>
 
     <div class="filter-container">
       <form action="/user/homepage" method="get">
         <div>
           <label for="search"></label>
-          <input type="text" name="search" id="search" value="<%= search %>" placeholder="Search">
-          
-        </div>
+          <input
+            type="text"
+            name="search"
+            id="search"
+            value="<%= search %>"
+            placeholder="Search"
+          />
+        </div> -->
 
-        <div>
+    <!-- <div>
           <label for="genre"></label>
           <select name="genre" id="genre">
             <option value="" <%= !genre ? "selected" : "" %> disabled>Select a Genre</option>
@@ -50,58 +97,224 @@
               <option value="<%= i %>" <%= minRating == i ? "selected" : "" %>><%= i %></option>
             <% } %>
           </select>
-        </div>
+        </div> -->
 
-        <button type="submit">Filter</button>
-      </form>   
+    <!-- <button type="submit">Filter</button>
+      </form>
       <form action="/user/homepage" method="get">
         <button type="submit">Reset</button>
-      </form> 
+      </form>
     </div>
-
-    <p>Results: <%= totalMovies %></p>
 
     <% if (search || genre !== "All" || minRating !== "All") { %>
-      <div class="filter-message">
-        <p>
-          Showing results
-          <% if (search) { %> for "<%= search %>" <% } %>
-          <% if (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %>
-          <% if (minRating && minRating !== "All") { %> with minimum rating of <%= minRating %> <% } %>
-        </p>
-      </div>
-    <% } %>
-    
+    <div class="filter-message">
+      <p>
+        Showing results <% if (search) { %> for "<%= search %>" <% } %> <% if
+        (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %> <% if
+        (minRating && minRating !== "All") { %> with minimum rating of <%=
+        minRating %> <% } %>
+      </p>
+    </div>
+    <% } %> -->
 
-    <div class="movie-container">
-    
-    
-      <% if(movies.length > 0) { %> <% movies.forEach(movie => { %>
-      <div class="movie-info">
-        <a href="/user/<%= movie._id %>">
-          <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          <strong><%= movie.title %></strong> <br />
-          <%= movie.genre %> <br />
-          Rating: <%= movie.rating %>
-        </a>
+    <div class="carousel-section">
+      <h2 class="section-title">Upcoming Releases</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('upcoming-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="upcoming-row">
+          <% upcoming.forEach(movie => { %>
+            <a href="/user/<%= movie._id %>">
+            <div class="upcoming-card">
+              <img
+                src="<%= movie.poster%>"
+                alt="<%= movie.title %>"
+              />
+            </div>
+          </a>
+          <% }) %>
+        </div>
+        <button class="arrow right" onclick="scrollRowRight('upcoming-row')">
+          &#10095;
+        </button>
       </div>
-      <% }) %> <% } else { %>
-      <p>No Movies/TV Shows Available.</p>
-      <% } %>
-     
     </div>
 
-    <div class="pagenav">
-      <% if (currentPage > 1 ) { %>
-      <a href="/user/homepage?pageNum=<%= currentPage - 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>&search=<%= search || "" %>"> Previous</a>
-      <% } %>
+    <div class="carousel-section">
+      <h2 class="section-title">Action Movies</h2>
 
-      <p>Page <%= currentPage %> of <%= totalOfPages %></p>
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('action-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="action-row">
+          <% actionMovies.forEach(movie => { %>
+            <a href="/user/<%= movie._id %>">
+          <div class="upcoming-card">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          </div>
+            </a>
+          <% }) %>
+        </div>
 
-      <% if (currentPage < totalOfPages ) { %>
-      <a href="/user/homepage?pageNum=<%= currentPage + 1 %>&genre=<%= genre || "" %>&minRating=<%= minRating || "" %>&search=<%= search || "" %>"> Next</a>
-      <% } %>
+        <button class="arrow right" onclick="scrollRowRight('action-row')">
+          &#10095;
+        </button>
+      </div>
     </div>
-   
+
+    <div class="carousel-section">
+      <h2 class="section-title">Chilling Crime Shows</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('crime-row')">
+          &#10094;
+        </button>
+
+        <div class="upcoming-scroll-container" id="crime-row">
+          <% crimeShows.forEach(movie => { %>
+            <a href="/user/<%= movie._id %>">
+          <div class="upcoming-card">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          </div>
+            </a>
+          <% }) %>
+        </div>
+
+        <button class="arrow right" onclick="scrollRowRight('crime-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <div class="carousel-section">
+      <h2 class="section-title">Feel-Good Comedies</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('comedy-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="comedy-row">
+          <% comedyTV.forEach(movie => { %>
+            <a href="/user/<%= movie._id %>">
+          <div class="upcoming-card">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          </div>
+            </a>
+          <% }) %>
+        </div>
+
+        <button class="arrow right" onclick="scrollRowRight('comedy-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <div class="carousel-section">
+      <h2 class="section-title">Mind-Bending Sci-Fi</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('sci-fi-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="sci-fi-row">
+          <% sciFiMovies.forEach(movie => { %>
+          <a href="/user/<%= movie._id %>">
+          <div class="upcoming-card">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          </div>
+            </a>
+          <% }) %>
+        </div>
+
+        <button class="arrow right" onclick="scrollRowRight('sci-fi-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <div class="carousel-section">
+      <h2 class="section-title">Dramatic Must-Sees</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollRowLeft('drama-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="drama-row">
+          <% dramaMovies.forEach(movie => { %>
+            <a href="/user/<%= movie._id %>">
+          <div class="upcoming-card">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+          </div>
+            </a>
+          <% }) %>
+        </div>
+
+        <button class="arrow right" onclick="scrollRowRight('drama-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <!--Footer-->
+    <footer class="footer">
+      <p>
+        &copy; <%= new Date().getFullYear() %> Gnale Kourouma. All rights
+        reserved.
+      </p>
+      <p>
+        Built with ❤️ using Node.js, Express, and MongoDB |
+        <a href="https://github.com/gnalekourouma/streamquest" target="_blank"
+          >View on GitHub</a
+        >
+      </p>
+    </footer>
+    <!-- Closing the footer -->
+
+    <script>
+      function scrollRowLeft(id) {
+        const container = document.getElementById(id);
+        container.scrollBy({ left: -500, behavior: "smooth" });
+      }
+
+      function scrollRowRight(id) {
+        const container = document.getElementById(id);
+        container.scrollBy({ left: 500, behavior: "smooth" });
+      }
+    </script>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".slide");
+
+      setInterval(() => {
+        slides[currentSlide].classList.remove("active");
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add("active");
+      }, 9000);
+
+      async function loadTrailer(movieId) {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=<%= process.env.TMDB_API_KEY %>`
+        );
+        const data = await res.json();
+        const trailer = data.results.find(
+          (v) => v.type === "Trailer" && v.site === "YouTube"
+        );
+        if (trailer) {
+          document.getElementById(
+            "trailer-frame"
+          ).src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+          document.getElementById("trailer-modal").style.display = "flex";
+        }
+      }
+
+      function closeTrailer() {
+        document.getElementById("trailer-frame").src = "";
+        document.getElementById("trailer-modal").style.display = "none";
+      }
+    </script>
   </body>
 </html>
