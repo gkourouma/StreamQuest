@@ -9,9 +9,16 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  watchlist: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Movie"}]
+  watchlist: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Movie",
+    },
+  ],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
