@@ -21,10 +21,7 @@
 
     <div class="slideshow-container">
       <% slides.forEach((movie, index) => { %>
-      <div
-        class="slide <%= index === 0 ? 'active' : '' %>"
-        data-trailer="<%= movie.id %>"
-      >
+      <div class="slide <%= index === 0 ? 'active' : '' %>" data-trailer="<%= movie.id %>">
         <img
           src="https://image.tmdb.org/t/p/original<%= movie.backdrop_path %>"
           alt="<%= movie.title %>"
@@ -32,10 +29,7 @@
         <div class="slide-overlay">
           <h2><%= movie.title %></h2>
           <p><%= movie.overview %></p>
-          <button
-            class="trailer-button"
-            onclick="loadTrailer('<%= movie.id %>')"
-          >
+          <button class="trailer-button" onclick="loadTrailer('<%= movie.id %>')">
             ▶ Watch Trailer
           </button>
         </div>
@@ -125,18 +119,39 @@
           &#10094;
         </button>
         <div class="upcoming-scroll-container" id="upcoming-row">
-          <% upcoming.forEach(movie => { %>
-            <a href="/user/<%= movie._id %>">
+          <% upcoming.forEach(movie => { if(movie && movie.poster && movie._id) { %>
             <div class="upcoming-card">
-              <img
-                src="<%= movie.poster%>"
-                alt="<%= movie.title %>"
-              />
+          <a href="/user/<%= movie._id %>">
+              <img src="<%= movie.poster%>" alt="<%= movie.title %>" />
+            </a>
             </div>
-          </a>
-          <% }) %>
+          <%} }) %>
         </div>
         <button class="arrow right" onclick="scrollRowRight('upcoming-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <div class="carousel-section">
+      <h2 class="section-title">🔥 Trending Right Now</h2>
+
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollLeft('trending-row')">
+          &#10094;
+        </button>
+
+        <div class="upcoming-scroll-container" id="trending-row">
+          <% trending.forEach(item => { if(item && item.poster && item._id) { %>
+            <div class="upcoming-card">
+              <a href="/user/<%= item._id %>">
+              <img src="<%= item.poster %>" alt="<%= item.title %>" />
+            </a>
+            </div>
+          <%} }) %>
+        </div>
+
+        <button class="arrow right" onclick="scrollRight('trending-row')">
           &#10095;
         </button>
       </div>
@@ -150,13 +165,13 @@
           &#10094;
         </button>
         <div class="upcoming-scroll-container" id="action-row">
-          <% actionMovies.forEach(movie => { %>
-            <a href="/user/<%= movie._id %>">
-          <div class="upcoming-card">
-            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          </div>
+          <% actionMovies.forEach(movie => { if (movie && movie.poster && movie._id) { %>
+            <div class="upcoming-card">
+          <a href="/user/<%= movie._id %>">
+              <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
             </a>
-          <% }) %>
+            </div>
+          <%} }) %>
         </div>
 
         <button class="arrow right" onclick="scrollRowRight('action-row')">
@@ -174,13 +189,13 @@
         </button>
 
         <div class="upcoming-scroll-container" id="crime-row">
-          <% crimeShows.forEach(movie => { %>
-            <a href="/user/<%= movie._id %>">
-          <div class="upcoming-card">
-            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          </div>
+          <% crimeShows.forEach(movie => {if (movie && movie.poster && movie._id) { %>
+            <div class="upcoming-card">
+          <a href="/user/<%= movie._id %>">
+              <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
             </a>
-          <% }) %>
+            </div>
+          <%} }) %>
         </div>
 
         <button class="arrow right" onclick="scrollRowRight('crime-row')">
@@ -197,13 +212,13 @@
           &#10094;
         </button>
         <div class="upcoming-scroll-container" id="comedy-row">
-          <% comedyTV.forEach(movie => { %>
-            <a href="/user/<%= movie._id %>">
-          <div class="upcoming-card">
-            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          </div>
+          <% comedyTV.forEach(movie => {if (movie && movie.poster && movie._id) { %>
+            <div class="upcoming-card">
+          <a href="/user/<%= movie._id %>">
+              <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
             </a>
-          <% }) %>
+            </div>
+          <%} }) %>
         </div>
 
         <button class="arrow right" onclick="scrollRowRight('comedy-row')">
@@ -220,13 +235,13 @@
           &#10094;
         </button>
         <div class="upcoming-scroll-container" id="sci-fi-row">
-          <% sciFiMovies.forEach(movie => { %>
+          <% sciFiMovies.forEach(movie => {if (movie && movie.poster && movie._id) { %>
+            <div class="upcoming-card">
           <a href="/user/<%= movie._id %>">
-          <div class="upcoming-card">
-            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          </div>
+              <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
             </a>
-          <% }) %>
+            </div>
+          <%} }) %>
         </div>
 
         <button class="arrow right" onclick="scrollRowRight('sci-fi-row')">
@@ -243,13 +258,13 @@
           &#10094;
         </button>
         <div class="upcoming-scroll-container" id="drama-row">
-          <% dramaMovies.forEach(movie => { %>
-            <a href="/user/<%= movie._id %>">
-          <div class="upcoming-card">
-            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
-          </div>
+          <% dramaMovies.forEach(movie => { if (movie && movie.poster && movie._id) { %>
+            <div class="upcoming-card">
+          <a href="/user/<%= movie._id %>">
+              <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
             </a>
-          <% }) %>
+            </div>
+          <%} }) %>
         </div>
 
         <button class="arrow right" onclick="scrollRowRight('drama-row')">
