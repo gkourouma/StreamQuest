@@ -1,24 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const Movie = require("../models/movie.js");
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const mongoose = require("mongoose");
 
 router.get("/homepage", async (req, res) => {
-  const TMDB_API_KEY = process.env.TMDB_API_KEY;
   let usedIds = [];
-
   const currentHour = new Date().getHours();
-  let greeting;
+  let greeting =
+    currentHour < 12
+      ? "Good Morning"
+      : currentHour < 18
+      ? "Good Afternoon"
+      : "Good Evening";
 
   try {
-    if (currentHour < 12) {
-      greeting = "Good Morning";
-    } else if (currentHour < 18) {
-      greeting = "Good Afternoon";
-    } else {
-      greeting = "Good Evening";
-    }
-
     const genreFilter =
       req.query.genre && req.query.genre !== "All"
         ? { genre: req.query.genre }
@@ -27,10 +23,9 @@ router.get("/homepage", async (req, res) => {
       req.query.minRating && req.query.minRating !== "All"
         ? { rating: { $gte: Math.floor(parseFloat(req.query.minRating)) } }
         : {};
-
     const searchFilter = req.query.search
       ? { title: { $regex: req.query.search, $options: "i" } }
-      : {}; //$regex allows partial matching, $options: 'i' makes it case-insensitive
+      : {};
 
     const filters = { ...genreFilter, ...ratingFilter, ...searchFilter };
 
@@ -40,7 +35,13 @@ router.get("/homepage", async (req, res) => {
     const popularData = await popularRes.json();
     const slides = popularData.results.slice(0, 5);
 
-    const usedIds = [];
+    const trending = await Movie.find({
+      source: "trending",
+      poster: { $ne: "" }
+    })
+      .sort({ releaseDate: -1 })
+      .limit(20);
+    usedIds.push(...trending.map((m) => m._id));
 
     const actionMovies = await Movie.find({
       genre: { $in: ["Action"] },
@@ -89,15 +90,10 @@ router.get("/homepage", async (req, res) => {
 
     const upcoming = await Movie.find({
       _id: { $nin: usedIds },
+      poster: { $ne: "" }
     })
       .sort({ releaseDate: -1 })
       .limit(20);
-    usedIds.push(...upcoming.map((m) => m._id));
-
-    // const tmdbId = movie.tmdbId; // make sure you have the TMDB ID
-    // const similarRes = await fetch(`https://api.themoviedb.org/3/movie/${tmdbId}/similar?api_key=${TMDB_API_KEY}&language=en-US`)
-    // const similarData = await similar.json();
-    // const similarMovies = similarData.results.slice(0, 5);
 
     res.render("user/homepage", {
       greeting,
@@ -106,6 +102,7 @@ router.get("/homepage", async (req, res) => {
       minRating: req.query.minRating || "",
       search: req.query.search || "",
       upcoming,
+      trending,
       actionMovies,
       dramaMovies,
       sciFiMovies,
@@ -113,10 +110,11 @@ router.get("/homepage", async (req, res) => {
       comedyTV,
     });
   } catch (error) {
-    console.log(error);
+    console.error("❌ Error rendering homepage:", error);
     res.redirect("/");
   }
 });
+
 
 // router.get('/import-upcoming', async (req, res) => {
 //   const TMDB_API_KEY = process.env.TMDB_API_KEY;
