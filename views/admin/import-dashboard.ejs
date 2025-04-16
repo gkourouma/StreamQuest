@@ -2,115 +2,118 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
+    <title>Admin Import Dashboard</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 2rem;
+      }
+      h1, h2 {
+        color: #333;
+      }
+      form, ul {
+        margin-bottom: 2rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+        cursor: pointer;
+      }
+      .status {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    </style>
   </head>
   <body>
     <h1>Admin Import Dashboard</h1>
 
-    <h2>Import Movies by Genre</h2>
+    <% if (success) { %>
+      <div class="status success"><%= success %></div>
+    <% } %>
+    <% if (error) { %>
+      <div class="status error"><%= error %></div>
+    <% } %>
+
+    <h2>🕒 Recently Updated</h2>
     <ul>
-      <% Object.entries(genreMap).forEach(([id, name]) => { %>
-      <li>
-        <a href="/admin/import/discover?genre=<%= id %>">Import <%= name %></a>
-      </li>
+      <% recentMovies.forEach(movie => { %>
+        <li>
+          <strong><%= movie.title %></strong> —
+          <%= movie.lastUpdated.toLocaleString() %>
+        </li>
       <% }) %>
     </ul>
 
-    <hr />
-
-    <h2>Admin Update Actions</h2>
+    <h2>Quick Update Filters</h2>
     <ul>
-      <li><a href="/admin/update-all-movies">Update All Movie Details</a></li>
       <li>
-        <a href="/admin/batch-update-type">Update All Types (Movie or TV)</a>
+        <form action="/admin/update-all-movies" method="get">
+          <input type="hidden" name="filter" value="missingPoster" />
+          <button type="submit">🖼️ Update Movies Missing Posters</button>
+        </form>
       </li>
       <li>
-        <a href="/admin/update-similar">Update Similar Recommendations</a>
+        <form action="/admin/update-all-movies" method="get">
+          <button type="submit">🔄 Update All Movies & Shows</button>
+        </form>
       </li>
-      <li><a href="/admin/update-cast-only">Update Only Cast Info</a></li>
-      <h2>Import by Category</h2>
-
-      <form action="/admin/import" method="get" style="margin-bottom: 2rem">
-        <label for="category">Select a category:</label>
-        <select name="category" id="category">
-          <option value="upcoming">Upcoming</option>
-          <option value="popular">Popular</option>
-          <option value="top_rated">Top Rated</option>
-          <option value="discover">Discover by Genre</option>
-        </select>
-
-        <label for="genre">Genre ID (only for discover):</label>
-        <input
-          type="text"
-          name="genre"
-          id="genre"
-          placeholder="e.g. 28 for Action"
-        />
-
-        <button type="submit">Import</button>
-      </form>
-
-      <h2>Genre ID</h2>
-      <p>   
-        The following are the genre IDs you can use for importing movies: <br>
-                "id": 28,
-                "name": "Action" <br> <br>
-             
-                "id": 12,
-                "name": "Adventure" <br> <br>
-              
-                "id": 16,
-                "name": "Animation" <br> <br>
-             
-                "id": 35,
-                "name": "Comedy" <br> <br>
-             
-                "id": 80,
-                "name": "Crime" <br> <br>
-              
-                "id": 99,
-                "name": "Documentary" <br> <br>
-              
-                "id": 18,
-                "name": "Drama" <br> <br>
-             
-                "id": 10751,
-                "name": "Family" <br> <br>
-              
-                "id": 14,
-                "name": "Fantasy" <br> <br>
-              
-                "id": 36,
-                "name": "History" <br> <br>
-              
-                "id": 27,
-                "name": "Horror" <br> <br>
-             
-                "id": 10402,
-                "name": "Music" <br> <br>
-              
-                "id": 9648,
-                "name": "Mystery" <br> <br>
-              
-                "id": 10749,
-                "name": "Romance" <br> <br>
-              
-                "id": 878,
-                "name": "Science Fiction" <br> <br>
-             
-                "id": 10770,
-                "name": "TV Movie" <br> <br>
-              
-                "id": 53,
-                "name": "Thriller" <br> <br>
-              
-                "id": 10752,
-                "name": "War" <br> <br>
-             
-                "id": 37,
-                "name": "Western" <br> <br>
-      </p>
     </ul>
+
+    <h2>Import by Genre</h2>
+    <form action="/admin/import" method="get">
+      <label for="genre">Select Genre:</label>
+      <select name="genre" id="genre">
+        <option value="">-- Choose a Genre --</option>
+        <% Object.entries(genreMap).forEach(([id, name]) => { %>
+          <option value="<%= id %>"><%= name %></option>
+        <% }) %>
+      </select>
+
+      <input type="hidden" name="category" value="discover" />
+      <input type="hidden" name="type" value="movie" />
+      <button type="submit">🎯 Import Selected Genre</button>
+    </form>
+
+    <h2>Trending</h2>
+    <form action="/admin/import/trending" method="get">
+      <button type="submit">🔥 Import Trending (Movies & TV)</button>
+    </form>
+
+    <h2>Custom Import</h2>
+    <form action="/admin/import" method="get">
+      <label for="category">Category:</label>
+      <select name="category" id="category">
+        <option value="popular">Popular</option>
+        <option value="upcoming">Upcoming</option>
+        <option value="top_rated">Top Rated</option>
+        <option value="discover">Discover</option>
+      </select>
+
+      <label for="genre">Genre ID (for discover only):</label>
+      <input
+        type="text"
+        name="genre"
+        id="genre"
+        placeholder="e.g. 28 for Action"
+      />
+
+      <label for="type">Media Type:</label>
+      <select name="type" id="type">
+        <option value="movie">Movie</option>
+        <option value="tv">TV</option>
+      </select>
+
+      <button type="submit">Import</button>
+    </form>
   </body>
 </html>
