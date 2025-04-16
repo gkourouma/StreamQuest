@@ -60,12 +60,55 @@ nav {
   font-size: 20px;
 }
 
+.watchlist-name input{
+  width: 12rem;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #1a1a1a;
+  color: #f2f2f2;
+  margin-bottom: 10px;
+}
+
 .watchlist-container {
+  max-width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border: 1px solid white;
   gap: 20px;
   padding: 20px;
+}
+
+.watchlist-header {
+  cursor: pointer;
+  background-color: #222;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.watchlist-header:hover {
+  background-color: #333;
+}
+
+.watchlist-header::after {
+  content: " (click to expand)";
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.watchlist-items{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-bottom: 12px;
+  gap: 20px;
+  padding: 20px;
+  /* border: 1px solid white; */
+}
+
+.watchlist-group {
+  width: 100%;
 }
 
 .movie-card {
@@ -73,6 +116,8 @@ nav {
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  gap: 10px;
+  margin-bottom: 1rem;
   border: 1px solid white;
   border-radius: 10px;
   overflow: hidden;
