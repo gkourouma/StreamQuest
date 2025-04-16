@@ -4,12 +4,12 @@ const reviewSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   content: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const movieSchema = new mongoose.Schema(
@@ -21,40 +21,48 @@ const movieSchema = new mongoose.Schema(
     tmdbId: {
       type: Number,
       unique: true,
-    },    
+    },
     genre: [String],
     type: {
       type: String,
-      enum: ['movie', 'tv'],
-      default: 'movie'
+      enum: ["movie", "tv"],
+      default: "movie",
     },
     overview: String,
     rating: Number,
     releaseDate: Date,
     run_time: Number,
-    poster: {
+    poster: String,
+    backdrop: String,
+    source: {
       type: String,
-    },
-    backdrop: {
-      type: String,
+      enum: ["trending", "popular", "discover", "top_rated", "upcoming"],
+      default: "discover",
     },
     credits: {
       cast: [
         {
           name: String,
           character: String,
-          profilePath: String
-        }
+          profilePath: String,
+        },
       ],
     },
     similar: [
       {
         title: String,
         poster: String,
-        tmdbId: Number
-      }
+        tmdbId: Number,
+      },
     ],
-    reviews: [reviewSchema]
+    lastUpdated: {
+      type: Date,
+      default: Date.now,
+    },
+    reviews: [reviewSchema],
+    trailer: {
+      type: String,
+    },
   },
   { collection: "2024_releases" }
 );
