@@ -42,27 +42,32 @@ app.use(
 );
 
 app.use(passUserToView);
-app.use('/auth', authController);
-app.use(isSignedIn);
 
-if (process.env.NODE_ENV !== "production") {
-  app.use("/admin", isSignedIn, isAdmin, adminController);
-}
+app.use("/auth", authController);
 
-app.use('/user', userHomeController)
-app.use('/user', watchlistController)
-app.use('/user',showController)
-
-
-app.get('/', (req, res) => {
-  if(req.session.user){
-    res.redirect('/user/homepage')
-  } else {
-  res.render('index')}
+app.use((req, res, next) => {
+  res.locals.success = req.session.success;
+  res.locals.error = req.session.error;
+  delete req.session.success;
+  delete req.session.error;
+  next();
 });
 
-// app.use('/auth', authController);
-// app.use(isSignedIn);
+
+app.get("/", (req, res) => {
+  if (req.session.user) {
+    return res.redirect("/user/homepage");
+  } else {
+    return res.render("index");
+  }
+});
+
+app.use("/user", isSignedIn, userHomeController);
+app.use("/user", isSignedIn, watchlistController);
+app.use("/user", isSignedIn, showController);
+
+app.use("/admin", isSignedIn, isAdmin, adminController);
+
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
