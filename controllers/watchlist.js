@@ -2,56 +2,95 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.js");
 const Movie = require("../models/movie.js");
+const Watchlist = require("../models/watchlist.js");
 
 router.get("/watchlist", async (req, res) => {
   try {
-    const user = await User.findById(req.session.user._id).populate({
-      path: "watchlist",
-      populate: {
-        path: "reviews.user",
-        select: "username _id",
-      },
-    });
+    const watchlists = await Watchlist.find({user:req.session.user._id})
+      .populate("items.mediaId")
+      .sort({ createdAt: -1 });
 
-    res.render("user/watchlist", { watchlists: user.watchlist, currentUserId: req.session.user._id });
+    res.render("user/watchlist", { watchlists, user: req.session.user._id });
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message);
   }
 });
 
-router.post("/watchlist/:movieId/add", async (req, res) => {
+router.post("/watchlists", async (req, res) => {
   try {
-    const movieId = req.params.movieId;
-    const user = await User.findById(req.session.user._id);
-    const movie = await Movie.findById(movieId);
+    const watchlistName = req.body.name;
 
-    if (!user.watchlist.includes(movieId)) {
-      user.watchlist.push(movieId);
-      await user.save();
-    }
+    await Watchlist.create({
+      user: req.session.user._id,
+      name: watchlistName,
+      items: [],
+    });
 
     res.redirect("/user/watchlist");
   } catch (error) {
     console.log(error);
-    res.redirect("/");
-  }
-});
-
-router.delete("/watchlist/:movieId", async (req, res) => {
-  try {
-    const movieId = req.params.movieId;
-    const user = await User.findById( req.session.user._id);
-
-    user.watchlist.pull(movieId)
-    await user.save()
     res.redirect("/user/watchlist");
+  }
+})
 
-  } catch (error) {
-    console.log(error);
-    res.redirect("/");
+router.post("/watchlists/add-to-selected", async (req, res) => {
+  try {
+    const { watchlistId, mediaId, type } = req.body;
+
+    await Watchlist.updateOne(
+      {
+        _id: watchlistId,
+        user: req.session.user._id,
+        "items.mediaId": { $ne: mediaId },
+      },
+      {
+        $push: { items: { mediaId, type } },
+      }
+    );
+
+    res.redirect("back");
+  } catch (err) {
+    console.error("❌ Failed to add to watchlist:", err);
+    res.status(500).send("Failed to add to watchlist.");
   }
 });
+
+
+
+router.delete("/watchlists/:watchlistId", async (req, res) => {
+  try {
+    await Watchlist.findOneAndDelete({
+      _id: req.params.watchlistId,
+      user: req.session.user._id, // security check
+    });
+
+    res.redirect("/user/watchlist");
+  } catch (err) {
+    console.error("❌ Failed to delete watchlist:", err);
+    res.status(500).send("Delete failed.");
+  }
+});
+
+router.delete("/watchlists/:watchlistId/remove/:mediaId", async (req, res) => {
+  try {
+    await Watchlist.updateOne(
+      {
+        _id: req.params.watchlistId,
+        user: req.session.user._id, // secure check
+      },
+      {
+        $pull: { items: { mediaId: req.params.mediaId } }
+      }
+    );
+
+    res.redirect("/user/watchlist");
+  } catch (err) {
+    console.error("❌ Failed to remove item:", err);
+    res.status(500).send("Item removal failed.");
+  }
+});
+
 
 router.post("/watchlist/:movieId/review", async (req, res) => {
   try {
