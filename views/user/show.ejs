@@ -40,9 +40,21 @@
               ▶ Watch Trailer
             </button>
             <button class="soundtrack-button">Soundtrack</button>
-            <form action="/user/watchlist/<%= movie._id %>/add" method="POST">
+            <form action="/user/watchlists/add-to-selected" method="POST">
+              <input type="hidden" name="mediaId" value="<%= movie._id %>">
+              <input type="hidden" name="type" value="<%= movie.type %>">
+            
+              <label for="watchlistId"></label>
+              <select name="watchlistId" id="watchlistId" required>
+                <option disabled selected value="">Select Watchlist</option>
+                <% watchlists.forEach(list => { %>
+                  <option value="<%= list._id %>"><%= list.name %></option>
+                <% }) %>
+              </select>
+            
               <button type="submit">Add to Watchlist</button>
             </form>
+            
           </div>
 
           <h2>Cast</h2>
@@ -64,12 +76,10 @@
             <% }) %>
           </div>
         </div>
-        <!-- Closing hero-overlay -->
       </div>
-      <!-- Closing hero -->
-      <!-- More Like This Section -->
-      <!-- <h2 class="section-title">🎬 More Like This</h2> -->
+     
 
+      <% if (similarMovies && similarMovies.length > 0) { %>
       <div class="carousel-section">
         <h2 class="section-title">More Like This</h2>
 
@@ -79,8 +89,8 @@
           </button>
 
           <div class="upcoming-scroll-container" id="similar-row">
-            <% movie.similar?.forEach(sim => { %>
-            <a href="/user/<%= movie._id %>">
+            <% similarMovies.forEach(sim => { %>
+            <a href="/user/<%= sim._id %>">
               <div class="upcoming-card">
                 <img src="<%= sim.poster %>" alt="<%= sim.title %>" />
               </div>
@@ -93,6 +103,28 @@
         </div>
       </div>
     </div>
+    <% } else if (recommended && recommended.length > 0) { %>
+    <div class="carousel-section">
+      <h2 class="section-title">🎯 Recommended for You</h2>
+      <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollLeft('recommended-row')">
+          &#10094;
+        </button>
+        <div class="upcoming-scroll-container" id="recommended-row">
+          <% recommended.forEach(item => { %>
+          <a href="/user/<%= item._id %>">
+            <div class="upcoming-card">
+              <img src="<%= item.poster %>" alt="<%= item.title %>" />
+            </div>
+          </a>
+          <% }) %>
+        </div>
+        <button class="arrow right" onclick="scrollRight('recommended-row')">
+          &#10095;
+        </button>
+      </div>
+    </div>
+    <% } %>
 
     <!--Footer-->
     <footer class="footer">
