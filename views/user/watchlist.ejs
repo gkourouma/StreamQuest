@@ -15,59 +15,104 @@
     <%- include('../partials/watchlist-navbar.ejs') %>
     <h1 class="header"><%= user.username %>'s Watchlist</h1>
 
-    <div class="watchlist-container">
-      <% if (watchlists.length > 0) { %> 
-        <% watchlists.forEach((movie) => { %>
+    <h2>Create a New Watchlist</h2>
+    <form class="watchlist-name" action="/user/watchlists" method="POST">
+      <input
+        type="text"
+        name="name"
+        placeholder="Enter watchlist name"
+        required
+      />
+      <button type="submit">Create Watchlist</button>
+    </form>
 
+    <div class="watchlist-container">
+      <% if (watchlists.length > 0) { %> <% watchlists.forEach(watchlist => { %>
+      <div class="watchlist-group">
+        <h2
+          class="watchlist-header"
+          onclick="toggleItems('<%= watchlist._id %>')"
+        >
+          <%= watchlist.name %>
+        </h2>
+        <form action="/user/watchlists/<%= watchlist._id %>?_method=DELETE" method="POST" style="display:inline;">
+          <button type="submit" style="margin-left: 10px;">Delete Watchlist</button>
+        </form>
+
+        <div
+          class="watchlist-items"
+          id="items-<%= watchlist._id %>"
+          style="display: none"
+        >
+          <% if (watchlist.items.length > 0) { %> <%
+          watchlist.items.forEach(item => { %> <% const movie = item.mediaId; %>
           <div class="movie-card">
-            <h2><%= movie.title %></h2>
-             <img src="<%= movie.poster %>" alt="<%= movie.title %>" class="movie-poster"/>
+            <h3><%= movie.title %></h3>
+            <img
+              src="<%= movie.poster %>"
+              alt="<%= movie.title %>"
+              class="movie-poster"
+            />
 
             <div class="movie-info">
-              <p><strong>Genre: </strong> <%= movie.genre %></p> <br>
-              <p><strong>IMDb Rating: </strong> <%= movie.rating %></p> <br>
-              <p><strong>Overview: </strong><%= movie.overview %></p>
-
-              <form action="/user/watchlist/<%= movie._id %>?_method=DELETE" method="post">
-                <button type="submit">Delete from Watchlist</button>
-              </form>
+              <p><strong>Genre:</strong> <%= movie.genre?.join(', ') %></p>
+              <p><strong>IMDb Rating:</strong> <%= movie.rating %></p>
+              <p><strong>Overview:</strong> <%= movie.overview %></p>
             </div>
 
+            <form
+              action="/user/watchlists/<%= watchlist._id %>/remove/<%= movie._id %>?_method=DELETE"
+              method="POST"
+            >
+              <button type="submit"> Remove from Watchlist</button>
+            </form>
+
+            <% if (movie.reviews?.length > 0) { %>
             <div class="reviews">
-              <span class="review-heading"><strong>Reviews</strong></span> <br />
-              <% if (movie.reviews.length > 0) { %> 
-                <% movie.reviews.forEach((review)=> { %>
-                  <strong><%= review.user.username %>:</strong>
-                  <p><%= review.content %></p>
-                 
-                    <% if (review.user._id.toString() === currentUserId.toString()) { %>
-                      <div class="edit-delete">
-                        <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=PUT" method="POST">
-                          <textarea name="content" id="content" placeholder="Edit Your Review" required><%= review.content %></textarea>
-                          <button type="submit" class="edit-button">Edit</button>
-                        </form>
-
-                        <form action="/user/watchlist/<%= movie._id %>/review/<%= review._id %>?_method=DELETE" method="POST">
-                          <button type="submit" class="delete-button">Delete</button>
-                        </form>
-                      </div>
-                    <% } %> 
-                <% }); %> 
-              <% } else { %>
-                <p> No Reviews Available </p>
-              <% } %>
+              <span class="review-heading"><strong>Reviews</strong></span>
+              <% movie.reviews.forEach(review => { %>
+              <strong><%= review.user?.username %>:</strong>
+              <p><%= review.content %></p>
+              <% }) %>
             </div>
+            <% } else { %>
+            <p>No Reviews Available</p>
+            <% } %>
 
-            <form action="/user/watchlist/<%= movie._id %>/review" method="post">
-              <textarea name="content" id="content" placeholder="Add a Review" required></textarea>
-              <button type="submit" class="submit-review">Submit Review</button>
+            <form
+              action="/user/watchlist/<%= movie._id %>/review"
+              method="post"
+            >
+              <textarea
+                name="content"
+                placeholder="Add a Review"
+                required
+              ></textarea>
+              <button type="submit">Submit Review</button>
             </form>
           </div>
-        <% }) %> 
-      <% } else { %>
-        <p> You Have No Movies or TV Shows in Your Watchlist. Create a new one now!</p>
+          <% }) %> <% } else { %>
+          <p>No items in this watchlist.</p>
+          <% } %>
+        </div>
+      </div>
+      <% }) %> <% } else { %>
+      <p>You have no watchlists yet. Create one to get started!</p>
       <% } %>
-      <a href="/user/homepage">Back to Home</a>
     </div>
+
+    <a href="/user/homepage">Back to Home</a>
+
+    <script>
+      function toggleItems(id) {
+        document.querySelectorAll(".watchlist-items").forEach(div => {
+          if (div.id === `items-${id}`) {
+            div.style.display = div.style.display === "block" ? "none" : "block";
+          } else {
+            div.style.display = "none";
+          }
+        });
+      }
+    </script>
   </body>
 </html>
