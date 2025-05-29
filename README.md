@@ -7,10 +7,17 @@ StreamQuest is a website where you can browse through movies and TV shows releas
 View [StreamQuest](https://streamquest-b32f111e5f9f.herokuapp.com/) now!
 
 
+# Demo Login (For Recruiters)
+
+To Explore the application without creating an account, use this test login:
+
+- **Username:** DemoUser
+- **Password:** Demo1234!
 
 # For First Time Users
 
 Once on landing page, you will have the option to sign up with your username and password. Once logged in, browse through the list of hundreds of titles and add the once that catches your eyes to your watchlist!
+
 
 # Website Features
 - Filter through movies and shows by genre and/or IMDb ratings
