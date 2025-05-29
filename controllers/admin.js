@@ -148,7 +148,7 @@ router.get("/update-all-movies", isSignedIn, isAdmin, async (req, res) => {
         };
       }
 
-      // ✅ Save similar section
+      // Save similar section
       const similarUrl = `https://api.themoviedb.org/3/${type}/${movie.tmdbId}/similar?api_key=${TMDB_API_KEY}&language=en-US`;
       const similarRes = await fetch(similarUrl);
       const similarData = await similarRes.json();
@@ -292,52 +292,5 @@ router.get("/import/trending", isSignedIn, isAdmin, async (req, res) => {
     res.status(500).send("Trending import failed.");
   }
 });
-
-
-// router.get("/unify-release-dates", async (req, res) => {
-//   try {
-//     const movies = await Movie.find();
-//     let updated = 0;
-
-//     for (let movie of movies) {
-//       let parsedDate = null;
-
-//       // Case 1: If release_year exists and looks like a full date string
-//       if (movie.release_year && typeof movie.release_year === "string") {
-//         parsedDate = new Date(movie.release_year);
-//         if (isNaN(parsedDate)) parsedDate = null; // safety fallback
-//       }
-
-//       // Case 2: If no full date, fall back to releaseYear (year only)
-//       if (
-//         !parsedDate &&
-//         movie.releaseYear &&
-//         typeof movie.releaseYear === "number"
-//       ) {
-//         parsedDate = new Date(movie.releaseYear, 0, 1); // Jan 1 of that year
-//       }
-
-//       // Save unified field
-//       if (parsedDate) {
-//         movie.releaseDate = parsedDate;
-//         await movie.save();
-//         updated++;
-//         console.log(`✅ Updated releaseDate for: ${movie.title}`);
-//       } else {
-//         console.log(`⚠️ Skipped: ${movie.title} — no date could be parsed`);
-//       }
-
-//       if (movie.releaseDate) {
-//         console.log(`⏭️ Already has releaseDate: ${movie.title}`);
-//         continue;
-//       }
-//     }
-
-//     res.send(`✅ Unified releaseDate for ${updated} movies.`);
-//   } catch (err) {
-//     console.error("❌ Error unifying release dates:", err);
-//     res.status(500).send("Error updating release dates.");
-//   }
-// });
 
 module.exports = router;

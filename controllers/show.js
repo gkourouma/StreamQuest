@@ -67,7 +67,7 @@ router.get("/:movieId", async (req, res) => {
           };
         });
     } else {
-      console.error("❌ similarData.results is not an array:", similarData);
+      console.error(" similarData.results is not an array:", similarData);
     }
 
     // Fallback: recommended by genre
@@ -92,7 +92,7 @@ router.get("/:movieId", async (req, res) => {
       watchlists: userWatchlists,
     });
   } catch (error) {
-    console.error("❌ Error loading show page:", error);
+    console.error(" Error loading show page:", error);
     res.redirect("/");
   }
 });
