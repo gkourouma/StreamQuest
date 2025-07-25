@@ -29,6 +29,12 @@ router.get("/homepage", async (req, res) => {
 
     const filters = { ...genreFilter, ...ratingFilter, ...searchFilter };
 
+    const filteredMovies = await Movie.find({
+      ...filters,
+      poster: { $ne: "" },
+    });
+
+
     const popularRes = await fetch(
       `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=en-US`
     );
@@ -97,6 +103,7 @@ router.get("/homepage", async (req, res) => {
 
     res.render("user/homepage", {
       greeting,
+      filters,
       slides,
       genre: req.query.genre || "",
       minRating: req.query.minRating || "",
@@ -108,6 +115,7 @@ router.get("/homepage", async (req, res) => {
       sciFiMovies,
       crimeShows,
       comedyTV,
+      filteredMovies,
     });
   } catch (error) {
     console.error("❌ Error rendering homepage:", error);
