@@ -9,6 +9,7 @@
       type="image/x-icon"
     />
     <link rel="stylesheet" href="/css/userhomepage.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     <title>StreamQuest</title>
   </head>
   <body>
@@ -51,65 +52,89 @@
       </div>
     </div>
 
-    <!-- <h2>Movies and TV Shows</h2>
+    <h2>Search Title</h2>
+  <form action="/user/homepage" method="GET" class="filter-form">
+    <div class="filter-container"></div>
+      <div class="search-container">
+        <label for="search" class="visually-hidden"></label>
+        <input
+          type="text"
+          name="search"
+          id="search"
+          value="<%= search %>"
+          placeholder="Search"
+        />
+      </div>
 
-    <div class="filter-container">
-      <form action="/user/homepage" method="get">
-        <div>
-          <label for="search"></label>
-          <input
-            type="text"
-            name="search"
-            id="search"
-            value="<%= search %>"
-            placeholder="Search"
-          />
-        </div> -->
+      <div class="genre-container">
+        <label for="genre"></label>
+        <select name="genre" id="genre">
+          <option value="" <%= !genre ? "selected" : "" %> disabled>Select a Genre</option>
+          <option value="All" <%= genre === "All" ? "selected" : "" %>>All</option>
+          <option value="Action" <%= genre === "Action" ? "selected" : "" %>>Action</option>
+          <option value="Adventure" <%= genre === "Adventure" ? "selected" : "" %>>Adventure</option>
+          <option value="Animation" <%= genre === "Animation" ? "selected" : "" %>>Animation</option>
+          <option value="Biography" <%= genre === "Biography" ? "selected" : "" %>>Biography</option>
+          <option value="Comedy" <%= genre === "Comedy" ? "selected" : "" %>>Comedy</option>
+          <option value="Crime" <%= genre === "Crime" ? "selected" : "" %>>Crime</option>
+          <option value="Drama" <%= genre === "Drama" ? "selected" : "" %>>Drama</option>
+          <option value="Family" <%= genre === "Family" ? "selected" : "" %>>Family</option>
+        </select>
+      </div>
 
-    <!-- <div>
-          <label for="genre"></label>
-          <select name="genre" id="genre">
-            <option value="" <%= !genre ? "selected" : "" %> disabled>Select a Genre</option>
-            <option value="All" <%= genre === "All" ? "selected" : "" %>>All</option>
-            <option value="Action" <%= genre === "Action" ? "selected" : "" %>>Action</option>
-            <option value="Adventure" <%= genre === "Adventure" ? "selected" : "" %>>Adventure</option>
-            <option value="Animation" <%= genre === "Animation" ? "selected" : "" %>>Animation</option>
-            <option value="Biography" <%= genre === "Biography" ? "selected" : "" %>>Biography</option>
-            <option value="Comedy" <%= genre === "Comedy" ? "selected" : "" %>>Comedy</option>
-            <option value="Crime" <%= genre === "Crime" ? "selected" : "" %>>Crime</option>
-            <option value="Drama" <%= genre === "Drama" ? "selected" : "" %>>Drama</option>
-            <option value="Family" <%= genre === "Family" ? "selected" : "" %>>Family</option>
-          </select>          
+      <div class="rating-container">
+        <label for="minRating"></label>
+        <select name="minRating" id="minRating">
+          <option value="" <%= !minRating ? "selected" : "" %> disabled>Minimum Rating</option>
+          <option value="All" <%= minRating === "All" ? "selected" : "" %>>All</option>
+          <% for (let i = 1; i <= 10; i++) { %>
+            <option value="<%= i %>" <%= minRating == i ? "selected" : "" %>><%= i %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <button class="search-btn" type="submit">Search</button>
+    </div>  
+  </form>
+
+<form action="/user/homepage" method="get">
+  <button class="reset-btn" type="submit">Reset</button>
+</form>
+
+<% if (search || (genre && genre !== "All") || (minRating && minRating !== "All")) { %>
+  <div class="filter-message">
+    <p>
+      Showing results
+      <% if (search) { %> for "<%= search %>" <% } %>
+      <% if (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %>
+      <% if (minRating && minRating !== "All") { %> with minimum rating of <%= minRating %> <% } %>
+    </p>
+  </div>
+
+  <div class="movie-grid">
+    <% const filteredMovies = upcoming.concat(trending, actionMovies, dramaMovies, sciFiMovies, crimeShows, comedyTV).filter(movie => {
+      const matchSearch = search ? movie.title.toLowerCase().includes(search.toLowerCase()) : true;
+      const matchGenre = genre && genre !== "All" ? movie.genre.includes(genre) : true;
+      const matchRating = minRating && minRating !== "All" ? movie.rating >= parseFloat(minRating) : true;
+      return matchSearch && matchGenre && matchRating;
+    }); %>
+
+    <% if (filteredMovies.length > 0) { %>
+      <% filteredMovies.forEach(movie => { if (movie && movie.poster && movie._id) { %>
+        <div class="movie-card">
+          <a href="/user/<%= movie._id %>">
+            <img src="<%= movie.poster %>" alt="<%= movie.title %>" />
+            <h3><%= movie.title %></h3>
+            <p>Genre: <%= movie.genre %></p>
+            <p>Rating: <%= movie.rating %></p>
+          </a>
         </div>
-
-        <div>
-          <label for="minRating"></label>
-          <select name="minRating" id="minRating">
-            <option value="" <%= !minRating ? "selected" : "" %> disabled>Minimum Rating</option>
-            <option value="All" <%= genre === "All" ? "selected" : "" %>>All</option>
-            <% for (let i = 1; i <= 10; i++) { %>
-              <option value="<%= i %>" <%= minRating == i ? "selected" : "" %>><%= i %></option>
-            <% } %>
-          </select>
-        </div> -->
-
-    <!-- <button type="submit">Filter</button>
-      </form>
-      <form action="/user/homepage" method="get">
-        <button type="submit">Reset</button>
-      </form>
-    </div>
-
-    <% if (search || genre !== "All" || minRating !== "All") { %>
-    <div class="filter-message">
-      <p>
-        Showing results <% if (search) { %> for "<%= search %>" <% } %> <% if
-        (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %> <% if
-        (minRating && minRating !== "All") { %> with minimum rating of <%=
-        minRating %> <% } %>
-      </p>
-    </div>
-    <% } %> -->
+      <% } }) %>
+    <% } else { %>
+      <p>No results found for your filters.</p>
+    <% } %>
+  </div>
+<% } else { %>
 
     <div class="carousel-section">
       <h2 class="section-title">Upcoming Releases</h2>
@@ -272,6 +297,7 @@
         </button>
       </div>
     </div>
+    <% } %>
 
     <!--Footer-->
     <footer class="footer">
