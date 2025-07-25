@@ -4,10 +4,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat";
+  font-family: "Montserrat", sans-serif;
 }
 
-html, body {
+html,
+body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -20,40 +21,6 @@ html, body {
 
 body {
   overflow-x: hidden;
-}
-
-
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3.75rem;
-  z-index: 100;
-  background-color: #0b0b01;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.25rem;
-}
-
-
-.navbar {
-  width: 100%;
-}
-
-.navlinks {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.navlinks a {
-  text-decoration: none;
-  color: #f2f2f2;
-}
-
-.navlinks a:hover {
-  text-decoration: underline;
 }
 
 #hero {
@@ -88,9 +55,7 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  box-shadow:
-    0 0 150px rgba(255, 255, 255, 0.3),
-    0 0 60px rgba(0, 0, 0, 0.5),
+  box-shadow: 0 0 150px rgba(255, 255, 255, 0.3), 0 0 60px rgba(0, 0, 0, 0.5),
     inset 0 0 1.875rem rgba(255, 255, 255, 0.1);
 }
 
@@ -99,9 +64,7 @@ nav {
   position: absolute;
   inset: 0;
   border-radius: 0.625rem;
-  box-shadow:
-    0 0 200px rgba(255, 255, 255, 0.4),
-    0 0 80px rgba(0, 0, 0, 0.6),
+  box-shadow: 0 0 200px rgba(255, 255, 255, 0.4), 0 0 80px rgba(0, 0, 0, 0.6),
     inset 0 0 40px rgba(255, 255, 255, 0.15);
   opacity: 0.5;
   pointer-events: none;
@@ -109,8 +72,13 @@ nav {
 }
 
 @keyframes flickerOpacity {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .hero-overlay h1 {
@@ -124,9 +92,9 @@ nav {
 }
 
 /* Buttons */
-.button-container{
+.button-container {
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 
@@ -136,7 +104,7 @@ form button {
   padding: 0.625rem 1.25rem;
   background: #d91284;
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   font-size: 1rem;
   color: white;
   cursor: pointer;
@@ -170,9 +138,7 @@ form button:hover,
   width: 80%;
   max-width: 50rem;
   border-radius: 0.625rem;
-  box-shadow:
-    0 0 25px rgba(0, 255, 255, 0.8),
-    0 0 50px rgba(0, 255, 255, 0.6),
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.6),
     inset 10px 10px 15px rgba(0, 0, 0, 0.6),
     inset -10px -10px 15px rgba(50, 50, 50, 0.2);
 }
@@ -196,8 +162,8 @@ form button:hover,
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: .5rem;
-  margin-bottom: .5;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5;
 }
 
 .actor-card {
@@ -277,8 +243,8 @@ h2 {
 }
 
 .upcoming-scroll-container {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .upcoming-card {
@@ -312,7 +278,7 @@ h2 {
   padding: 0 1rem;
 }
 
-#watchlistId{
+#watchlistId {
   width: 12rem;
   padding: 10px;
   border-radius: 8px;
@@ -326,11 +292,11 @@ h2 {
   max-width: 400px;
   padding: 2rem 3rem;
   background-color: #f9f9f9;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
 }
 
 #addWatchlistModal .modal-header {
-  justify-content: center; 
+  justify-content: center;
   position: relative;
   border-bottom: none;
   padding-bottom: 0;
@@ -365,13 +331,12 @@ h2 {
   font-size: 1.25rem;
 }
 
-.btn-close{
+.btn-close {
   position: absolute;
   right: -10rem;
   top: 10%;
   transform: translateY(-50%);
 }
-
 
 .footer {
   background-color: #0b0b01;
@@ -385,7 +350,7 @@ h2 {
 .footer p {
   color: #f2f2f2;
   font-size: 0.8rem;
-  word-spacing: .2rem;
+  word-spacing: 0.2rem;
 }
 .footer a {
   color: #d91284;
@@ -402,7 +367,6 @@ h2 {
     width: 65%;
   }
 }
-
 
 @media (max-width: 768px) {
   nav {
