@@ -140,7 +140,14 @@ body {
 }
 
 .search-container input, .genre-container select, .rating-container select {
-  padding: 5px;
+  width: 100%;
+  /* height: 80px; */
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #1a1a1a;
+  color: #f2f2f2;
 }
 
 .search-btn, .reset-btn{
