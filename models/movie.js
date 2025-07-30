@@ -34,6 +34,8 @@ const movieSchema = new mongoose.Schema(
     run_time: Number,
     poster: String,
     backdrop: String,
+    number_of_episodes: Number,
+    number_of_seasons: Number,
     source: {
       type: String,
       enum: ["trending", "popular", "discover", "top_rated", "upcoming"],
