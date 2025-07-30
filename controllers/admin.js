@@ -148,6 +148,14 @@ router.get("/update-all-movies", isSignedIn, isAdmin, async (req, res) => {
         };
       }
 
+      if (type === "tv") {
+        movie.number_of_seasons = tmdbData.number_of_seasons || movie.number_of_seasons;
+        movie.number_of_episodes = tmdbData.number_of_episodes || movie.number_of_episodes;
+        
+        console.log(`${movie.title}: ${tmdbData.number_of_seasons} seasons, ${tmdbData.number_of_episodes} episodes`);
+      }
+
+
       // Save similar section
       const similarUrl = `https://api.themoviedb.org/3/${type}/${movie.tmdbId}/similar?api_key=${TMDB_API_KEY}&language=en-US`;
       const similarRes = await fetch(similarUrl);
