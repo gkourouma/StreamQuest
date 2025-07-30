@@ -37,7 +37,12 @@
           <p>Release date unknown</p>
           <% } %>
           <p>Rating: <%= movie.rating || "N/A" %> out of 10</p>
+          <% if (mediaType === "movie") { %>
           <p>Runtime: <%= formatRuntime(movie.run_time) %></p>
+          <% } else if (mediaType === "tv") { %>
+            <p> Seasons: <%= seasons %></p>
+            <p> Episodes: <%= episodes %></p>
+            <% } %>
           <div class="button-container">
             <button class="trailer-button" onclick="loadTrailer()">
               ▶ Watch Trailer
