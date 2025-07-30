@@ -100,11 +100,17 @@
 <form action="/user/homepage" method="get">
   <button class="reset-btn" type="submit">Reset</button>
 </form>
+<% const filteredMovies = upcoming.concat(trending, actionMovies, dramaMovies, sciFiMovies, crimeShows, comedyTV).filter(movie => {
+  const matchSearch = search ? movie.title.toLowerCase().includes(search.toLowerCase()) : true;
+  const matchGenre = genre && genre !== "All" ? movie.genre.includes(genre) : true;
+  const matchRating = minRating && minRating !== "All" ? movie.rating >= parseFloat(minRating) : true;
+  return matchSearch && matchGenre && matchRating;
+}); %>
 
 <% if (search || (genre && genre !== "All") || (minRating && minRating !== "All")) { %>
   <div class="filter-message">
     <p>
-      Showing results
+      Showing <%= filteredMovies.length %> results
       <% if (search) { %> for "<%= search %>" <% } %>
       <% if (genre && genre !== "All") { %> in genre "<%= genre %>" <% } %>
       <% if (minRating && minRating !== "All") { %> with minimum rating of <%= minRating %> <% } %>
@@ -112,12 +118,6 @@
   </div>
 
   <div class="movie-grid">
-    <% const filteredMovies = upcoming.concat(trending, actionMovies, dramaMovies, sciFiMovies, crimeShows, comedyTV).filter(movie => {
-      const matchSearch = search ? movie.title.toLowerCase().includes(search.toLowerCase()) : true;
-      const matchGenre = genre && genre !== "All" ? movie.genre.includes(genre) : true;
-      const matchRating = minRating && minRating !== "All" ? movie.rating >= parseFloat(minRating) : true;
-      return matchSearch && matchGenre && matchRating;
-    }); %>
 
     <% if (filteredMovies.length > 0) { %>
       <% filteredMovies.forEach(movie => { if (movie && movie.poster && movie._id) { %>
