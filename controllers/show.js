@@ -30,6 +30,8 @@ router.get("/:movieId", async (req, res) => {
       return `${h}h ${m}m`;
     }
 
+    const episodes = movie.number_of_episodes;
+    const seasons = movie.number_of_seasons;
     const tmdbId = movie.tmdbId;
     const mediaType = movie.type === "tv" ? "tv" : "movie";
 
@@ -90,6 +92,10 @@ router.get("/:movieId", async (req, res) => {
       similarMovies,
       recommended,
       watchlists: userWatchlists,
+      episodes,
+      seasons,
+      tmdbId,
+      mediaType,
     });
   } catch (error) {
     console.error(" Error loading show page:", error);
